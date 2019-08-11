@@ -1,5 +1,1 @@
 rootProject.name = 'web3j-unit'
-
-include 'module1'
-include 'module2:module2a'
-include 'module2:module2b'
