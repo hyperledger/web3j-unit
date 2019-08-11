@@ -1,0 +1,73 @@
+buildscript {
+
+    ext.kotlinLoggingVersion = '1.6.24'
+    ext.logbackVersion = '1.2.3'
+    
+    ext.junitVersion = '5.3.2'
+    ext.mockitoKotlinVersion = '1.6.0'
+
+    repositories { mavenCentral() }
+
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.3.21"
+    id "com.diffplug.gradle.spotless" version "3.16.0"
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+                "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
+                "ch.qos.logback:logback-classic:$logbackVersion"
+
+        testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
+                "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    }
+
+    compileKotlin { kotlinOptions.jvmTarget = "1.8" }
+    compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
+
+    apply plugin: 'com.diffplug.gradle.spotless'
+    // see https://github.com/diffplug/spotless/tree/master/plugin-gradle
+    spotless {
+        kotlin {
+            // This path needs to be relative to each project
+            target fileTree('.') {
+                include '**/*.kt'
+                exclude '**/.gradle/**'
+            }
+            // see https://github.com/shyiko/ktlint#standard-rules
+            ktlint().userData(['max_line_length': '100', 'insert_final_newline': 'true'])
+            licenseHeaderFile "${rootDir}/gradle/spotless.kotlin.license"  // License header file
+        }
+
+        groovyGradle {
+            target '*.gradle'
+            greclipse().configFile(rootProject.file('gradle/formatter.properties'))
+            endWithNewline()
+            paddedCell() // recommended hack to keep gradle files tidy
+        }
+    }
+}
