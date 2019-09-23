@@ -1,0 +1,69 @@
+image: gradle:4.10.2
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+
+stages:
+  - build
+  - release
+  - publish
+
+build-snapshot:
+  stage: build
+  script:
+    - ./gradlew spotlessCheck build -x test
+  artifacts:
+    paths:
+      - scripts/
+      - build/libs/
+  only:
+    refs:
+      - master
+
+release-snapshot:
+  variables:
+    OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
+  stage: release
+  script:
+    - ./gradlew uploadArchives
+  only:
+    refs:
+      - master
+
+build-version:
+  stage: build
+  script:
+    - ./gradlew spotlessCheck build -x test
+  artifacts:
+    paths:
+      - scripts/
+      - build/libs/
+  only:
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
+
+release-version:
+  variables:
+    OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
+  stage: release
+  allow_failure: true
+  script:
+    - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayUpload bintrayPublish -x build
+  only:
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
+
+publish-console:
+  stage: publish
+  script:
+    - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} console:githubRelease
+  only:
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
