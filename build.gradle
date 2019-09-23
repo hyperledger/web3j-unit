@@ -58,7 +58,8 @@ allprojects {
 
     compileKotlin {
         dependsOn  'generateContractWrappers'
-        kotlinOptions.jvmTarget = "1.8" }
+        kotlinOptions.jvmTarget = "1.8"
+    }
     compileTestKotlin {
         dependsOn  'generateTestContractWrappers'
         kotlinOptions.jvmTarget = "1.8"
@@ -92,16 +93,16 @@ allprojects {
     }
 }
 
-    ext {
-        ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
-        ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
-        ossrhRepoUrl = project.hasProperty('ossrhRepoUrl') ? project.property('ossrhRepoUrl') : System.getenv('OSSRH_REPO_URL')
-        bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-        bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-        bintrayGpgPassphrase = project.hasProperty('bintrayGpgPassphrase') ? project.property('bintrayGpgPassphrase') : System.getenv('BINTRAY_GPG_PASSPHRASE')
-        isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
-        manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
-    }
+ext {
+    ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
+    ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
+    ossrhRepoUrl = project.hasProperty('ossrhRepoUrl') ? project.property('ossrhRepoUrl') : System.getenv('OSSRH_REPO_URL')
+    bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    bintrayGpgPassphrase = project.hasProperty('bintrayGpgPassphrase') ? project.property('bintrayGpgPassphrase') : System.getenv('BINTRAY_GPG_PASSPHRASE')
+    isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
+    manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
+}
 
 task javadocJar(type: Jar) {
     archiveClassifier = 'javadoc'
@@ -113,9 +114,7 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-artifacts {
-    archives sourcesJar, javadocJar
-}
+artifacts { archives sourcesJar, javadocJar }
 
 publishing {
     publications {
@@ -168,7 +167,7 @@ uploadArchives {
                 authentication(
                         userName: ossrhUsername,
                         password: ossrhPassword
-                )
+                        )
             }
 
             pom.project {

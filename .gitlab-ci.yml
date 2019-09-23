@@ -1,4 +1,4 @@
-image: gradle:4.10.2
+image: gradle:5.5.1
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
