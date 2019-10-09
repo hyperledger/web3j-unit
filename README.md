@@ -6,10 +6,17 @@
 
 ```groovy
    repositories {
-       maven()
+      maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://dl.bintray.com/ethereum/maven" }
    }
 
-   testCompile "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
+   testImplementation "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
+```
+or if JUnit already exists as a dependency:
+```
+testImplementation ("org.web3j:web3j-unit:4.6.0-SNAPSHOT"){
+      exclude group:'org.junit.jupiter'
+    }
 ```
 
 2. Create a new test with the `@EVMTest` annotation.
