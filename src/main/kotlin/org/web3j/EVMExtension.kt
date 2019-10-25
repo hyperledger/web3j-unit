@@ -12,6 +12,7 @@
  */
 package org.web3j
 
+import java.util.Optional
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ConditionEvaluationResult
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.junit.platform.commons.util.AnnotationUtils
-import org.testcontainers.containers.wait.strategy.Wait
+import org.web3j.container.ContainerBuilder
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
@@ -30,7 +31,6 @@ import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
 import org.web3j.utils.Async
-import java.util.Optional
 
 class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver {
 
@@ -39,7 +39,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
 
     val gasProvider = DefaultGasProvider()
 
-    lateinit var pantheonContainer: KGenericContainer
+    lateinit var container: KGenericContainer
 
     lateinit var web3j: Web3j
 
@@ -51,27 +51,15 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
             .orElseThrow { ExtensionConfigurationException("@EVMTest not found") }
     }
 
-    override fun beforeAll(context: ExtensionContext?) {
-        pantheonContainer = KGenericContainer("pegasyseng/pantheon:1.2.0")
-            .withExposedPorts(8545, 8546)
-            .withCommand(
-                "--miner-enabled",
-                "--miner-coinbase=${credentials.address}",
-                "--rpc-http-enabled",
-                "--rpc-ws-enabled",
-                "--network=dev"
-            )
-            .waitingFor(Wait
-                .forHttp("/liveness")
-                .forStatusCode(200).forPort(8545))
+    override fun beforeAll(context: ExtensionContext) {
+        val evmTest = AnnotationUtils
+            .findAnnotation(context.requiredTestClass, EVMTest::class.java)
 
-        pantheonContainer.start()
-
-        val port = pantheonContainer.getMappedPort(8545)
+        container = ContainerBuilder().type(evmTest.get().type).build()
 
         web3j = Web3j.build(
             HttpService(
-                "http://localhost:" + port!!
+                "http://localhost:" + container.rpcPort
             ), 500, Async.defaultExecutorService()
         )
 
@@ -79,7 +67,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
     }
 
     override fun afterAll(context: ExtensionContext) {
-        pantheonContainer.stop()
+        container.stop()
         web3j.shutdown()
     }
 

@@ -13,8 +13,8 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.21"
-    id "com.diffplug.gradle.spotless" version "3.16.0"
+    id "org.jetbrains.kotlin.jvm" version "1.3.50"
+    id "com.diffplug.gradle.spotless" version "3.25.0"
     id 'org.web3j' version '4.4.0'
 
     id "com.github.breadmoirai.github-release" version "2.2.9"
@@ -54,6 +54,10 @@ allprojects {
                 "org.testcontainers:testcontainers:$testContainersVersion",
                 "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
                 "org.web3j:core:$web3jVersion"
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
     compileKotlin {

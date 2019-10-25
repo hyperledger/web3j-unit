@@ -41,4 +41,4 @@ import org.junit.jupiter.api.extension.ExtendWith
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 @Retention(AnnotationRetention.RUNTIME)
 @ExtendWith(EVMExtension::class)
-annotation class EVMTest
+annotation class EVMTest(val type: NodeType)

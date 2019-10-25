@@ -13,6 +13,26 @@
 package org.web3j
 
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.WaitStrategy
 
 // https://github.com/testcontainers/testcontainers-java/issues/318
-class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
+abstract class KGenericContainer(imageName: String, version: String?) :
+    GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")) {
+
+    val rpcPort: Int
+
+    init {
+        withExposedPorts(8545)
+        withCommand(*commands())
+        waitingFor(isLive())
+        withLogConsumer { println(it.utf8String) }
+        start()
+
+        this.rpcPort = getMappedPort(8545)
+
+    }
+
+    abstract fun commands(): Array<String>
+
+    abstract fun isLive(): WaitStrategy
+}
