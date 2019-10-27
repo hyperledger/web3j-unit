@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
+import org.junit.jupiter.api.io.TempDir
 import org.junit.platform.commons.util.AnnotationUtils
 import org.web3j.container.ContainerBuilder
 import org.web3j.crypto.Credentials
@@ -30,9 +31,16 @@ import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
+import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
+import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 
 class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver {
+
+    @TempDir lateinit var tempDir: Path
 
     val credentials = Credentials
         .create("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63")
@@ -53,9 +61,26 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
 
     override fun beforeAll(context: ExtensionContext) {
         val evmTest = AnnotationUtils
-            .findAnnotation(context.requiredTestClass, EVMTest::class.java)
+            .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow()
 
-        container = ContainerBuilder().type(evmTest.get().type).build()
+        val genesis: Path = evmTest.genesis.let {
+            when (it) {
+                "dev", "dev.json" -> resourceToTempPath("dev.json")
+                "goerli", "goerli.json" -> resourceToTempPath("goerli.json")
+                "mainnet", "mainnet.json" -> resourceToTempPath("mainnet.json")
+                "rinkeby", "rinkeby.json" -> resourceToTempPath("rinkeby.json")
+                "ropsten", "ropsten.json" -> resourceToTempPath("ropsten.json")
+                else ->  Path.of(it)
+            }
+        }
+
+        container = ContainerBuilder()
+            .type(evmTest.type)
+            .version(evmTest.version)
+            .withGenesis(genesis)
+            .build()
+
+        container.startNode()
 
         web3j = Web3j.build(
             HttpService(
@@ -63,7 +88,19 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
             ), 500, Async.defaultExecutorService()
         )
 
-        transactionManager = FastRawTransactionManager(web3j, credentials)
+        transactionManager = FastRawTransactionManager(web3j, credentials, PollingTransactionReceiptProcessor(web3j, 1000, 30))
+    }
+
+    private fun resourceToTempPath(resource: String): Path {
+        val source = this.javaClass.classLoader.getResourceAsStream(resource)
+        val path = Files.createTempDirectory("")
+        val target = path.resolve(resource)
+        Files.copy(
+            source,
+            target,
+            StandardCopyOption.REPLACE_EXISTING
+        )
+        return target
     }
 
     override fun afterAll(context: ExtensionContext) {

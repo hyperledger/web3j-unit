@@ -12,27 +12,32 @@
  */
 package org.web3j
 
+import com.github.dockerjava.api.command.CreateContainerCmd
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.WaitStrategy
+import org.testcontainers.utility.MountableFile
+import java.nio.file.Path
+import java.util.function.Consumer
 
 // https://github.com/testcontainers/testcontainers-java/issues/318
-abstract class KGenericContainer(imageName: String, version: String?) :
+abstract class KGenericContainer(imageName: String, version: String?, private val genesisPath: Path) :
     GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")) {
 
-    val rpcPort: Int
+    var rpcPort: Int = 0
 
-    init {
-        withExposedPorts(8545)
-        withCommand(*commands())
-        waitingFor(isLive())
+    fun startNode() {
         withLogConsumer { println(it.utf8String) }
+        withExposedPorts(8545)
+        withCopyFileToContainer(MountableFile.forHostPath(genesisPath), "/genesis.json")
+//        withCopyFileToContainer(MountableFile.forClasspathResource("geth_start.sh"), "/start.sh")
+//        withCreateContainerCmdModifier { c -> c.withEntrypoint("/start.sh") }
+        withCommand(*commands())
+        waitingFor(withWaitStrategy())
         start()
-
-        this.rpcPort = getMappedPort(8545)
-
+        rpcPort = getMappedPort(8545)
     }
 
     abstract fun commands(): Array<String>
 
-    abstract fun isLive(): WaitStrategy
+    protected abstract fun withWaitStrategy(): WaitStrategy
 }
