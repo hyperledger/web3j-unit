@@ -1,19 +1,17 @@
 package org.web3j.container.parity
 
-import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.containers.wait.strategy.WaitStrategy
-import org.web3j.KGenericContainer
-import java.nio.file.Path
+import org.web3j.container.KGenericContainer
 
-class ParityContainer(version: String?, genesisPath: Path) :
-    KGenericContainer("parity/parity", version, genesisPath) {
-
-    override fun withWaitStrategy(): WaitStrategy =
-        Wait.forHttp("/").forStatusCode(200).forPort(8545)
-
-
-    override fun commands(): Array<String> = arrayOf(
-        "--config=dev",
-        "--chain=/genesis.json")
-
-}
+class ParityContainer(
+    version: String?,
+    resourceFiles: HashMap<String, String>,
+    hostFiles: HashMap<String, String>,
+    genesisPath: String
+) :
+    KGenericContainer(
+        "parity/parity",
+        version,
+        resourceFiles,
+        hostFiles,
+        "parity/parity_start.sh",
+        if (genesisPath == "dev") "parity/$genesisPath" else genesisPath)

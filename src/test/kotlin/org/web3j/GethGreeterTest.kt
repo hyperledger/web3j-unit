@@ -20,7 +20,7 @@ import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
 @EVMTest(NodeType.GETH)
-class GreeterTest {
+class GethGreeterTest {
 
     @Test
     fun greeterDeploys(

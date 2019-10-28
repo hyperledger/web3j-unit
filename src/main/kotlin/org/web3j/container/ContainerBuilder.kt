@@ -13,7 +13,6 @@
 package org.web3j.container
 
 import java.lang.RuntimeException
-import java.nio.file.Path
 import org.web3j.NodeType
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.geth.GethContainer
@@ -21,9 +20,11 @@ import org.web3j.container.parity.ParityContainer
 
 class ContainerBuilder {
 
-    private lateinit var genesisPath: Path
+    private lateinit var genesisPath: String
     private lateinit var type: NodeType
     private var version: String? = null
+    private val resourceFiles: HashMap<String, String> = hashMapOf()
+    private val hostFiles: HashMap<String, String> = hashMapOf()
 
     fun type(type: NodeType) = apply {
         this.type = type
@@ -33,14 +34,17 @@ class ContainerBuilder {
         this.version = version
     }
 
-    fun withGenesis(genesisPath: Path) = apply {
+    fun withGenesis(genesisPath: String) = apply {
         this.genesisPath = genesisPath
     }
 
-    fun build() = when (type) {
-            NodeType.BESU -> BesuContainer(version, genesisPath)
-            NodeType.GETH -> GethContainer(version, genesisPath)
-            NodeType.PARITY -> ParityContainer(version, genesisPath)
+    fun build(): KGenericContainer {
+        return when (type) {
+            NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
+            NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
+            NodeType.PARITY -> ParityContainer(version, resourceFiles, hostFiles, genesisPath)
             else -> throw RuntimeException("Container Type Not Supported: $type")
         }
+    }
+
 }
