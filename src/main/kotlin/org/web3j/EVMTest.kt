@@ -40,4 +40,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 @Retention(AnnotationRetention.RUNTIME)
 @ExtendWith(EVMExtension::class)
-annotation class EVMTest(val type: NodeType = NodeType.BESU, val version: String = "latest", val genesis: String = "dev")
+annotation class EVMTest(
+    val type: NodeType = NodeType.BESU,
+    val version: String = "latest",
+    val genesis: String = "dev"
+)

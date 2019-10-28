@@ -16,7 +16,6 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.utility.MountableFile
-import java.time.Duration
 
 // https://github.com/testcontainers/testcontainers-java/issues/318
 open class KGenericContainer(
@@ -35,7 +34,7 @@ open class KGenericContainer(
         resolveGenesis()
         withLogConsumer { println(it.utf8String) }
         withExposedPorts(8545)
-        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript),"/start.sh")
+        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript), "/start.sh")
         resourceFiles.forEach { (source, target) ->
             withCopyFileToContainer(MountableFile.forClasspathResource(source), target)
         }
@@ -50,7 +49,7 @@ open class KGenericContainer(
 
     open fun resolveGenesis() {
         genesis.let {
-            val resolvedGenesis = if(it.endsWith(".json")) it else "$it.json"
+            val resolvedGenesis = if (it.endsWith(".json")) it else "$it.json"
             if (inClassPath(resolvedGenesis)) {
                 resourceFiles[resolvedGenesis] = "/genesis.json"
             } else {
@@ -60,7 +59,6 @@ open class KGenericContainer(
     }
 
     private fun inClassPath(path: String) = this.javaClass.classLoader.getResource(path) != null
-
 
     protected open fun withWaitStrategy(): WaitStrategy =
         Wait.forHttp("/").forStatusCode(200).forPort(8545)

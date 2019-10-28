@@ -12,6 +12,7 @@
  */
 package org.web3j
 
+import java.nio.file.Path
 import java.util.Optional
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
@@ -34,9 +35,6 @@ import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
 import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 
 class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver {
 
@@ -77,7 +75,13 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
             ), 500, Async.defaultExecutorService()
         )
 
-        transactionManager = FastRawTransactionManager(web3j, credentials, PollingTransactionReceiptProcessor(web3j, 1000, 30))
+        transactionManager = FastRawTransactionManager(
+            web3j,
+            credentials,
+            PollingTransactionReceiptProcessor(
+                web3j,
+                1000,
+                30))
     }
 
     override fun afterAll(context: ExtensionContext) {
