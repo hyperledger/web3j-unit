@@ -42,8 +42,7 @@ class ContainerBuilder {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
-            NodeType.PARITY -> ParityContainer(version, resourceFiles, hostFiles, genesisPath)
-            else -> throw RuntimeException("Container Type Not Supported: $type")
+            NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
         }
     }
 }
