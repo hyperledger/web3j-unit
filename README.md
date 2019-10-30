@@ -12,7 +12,8 @@
    testCompile "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
 ```
 
-2. Create a new test with the `@EVMTest` annotation.
+2. Create a new test with the `@EVMTest` annotation. To configure the 
+environment pass parameters into the `@EVMTest` annotation
 
 ```java
 @EVMTest
