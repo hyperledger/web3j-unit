@@ -16,7 +16,6 @@ import java.lang.RuntimeException
 import org.web3j.NodeType
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.geth.GethContainer
-import org.web3j.container.parity.ParityContainer
 
 class ContainerBuilder {
 
