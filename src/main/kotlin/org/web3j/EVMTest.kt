@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 /**
  * {@code @EVMTest} is a JUnit Jupiter extension to activate automatic
- * startup and stop of Pantheon containers used in a test case.
+ * startup and stop of Ethereum Services used in a test case.
  *
  * <p><strong>Note:</strong> This extension has only be tested with sequential
  * test execution. Using it with parallel test execution is unsupported and
@@ -29,9 +29,8 @@ import org.junit.jupiter.api.extension.ExtendWith
  * class MyContractTest {
  *
  *     &#64;Test
- *     void test() {
- *         assertTrue(MY_SQL_CONTAINER.isRunning());
- *         assertTrue(postgresqlContainer.isRunning());
+ *     void test(Web3j web3j, TransactionManager transactionManager, GasProvider gasProvider) {
+ *         MyContract.deploy(web3j, transactionManager, gasProvider).send()
  *     }
  * }
  * </pre>
@@ -41,4 +40,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 @Retention(AnnotationRetention.RUNTIME)
 @ExtendWith(EVMExtension::class)
-annotation class EVMTest
+annotation class EVMTest(
+    val type: NodeType = NodeType.BESU,
+    val version: String = "latest",
+    val genesis: String = "dev"
+)

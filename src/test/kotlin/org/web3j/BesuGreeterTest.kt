@@ -19,8 +19,8 @@ import org.web3j.protocol.Web3j
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
-@EVMTest
-class GreeterTest {
+@EVMTest(NodeType.BESU)
+class BesuGreeterTest {
 
     @Test
     fun greeterDeploys(

@@ -12,7 +12,8 @@
  */
 package org.web3j
 
-import org.testcontainers.containers.GenericContainer
-
-// https://github.com/testcontainers/testcontainers-java/issues/318
-class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
+enum class NodeType {
+    BESU,
+    GETH,
+    PARITY
+}

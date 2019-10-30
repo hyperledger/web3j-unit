@@ -12,6 +12,8 @@
  */
 package org.web3j
 
+import java.nio.file.Path
+import java.util.Optional
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ConditionEvaluationResult
@@ -20,8 +22,10 @@ import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
+import org.junit.jupiter.api.io.TempDir
 import org.junit.platform.commons.util.AnnotationUtils
-import org.testcontainers.containers.wait.strategy.Wait
+import org.web3j.container.ContainerBuilder
+import org.web3j.container.KGenericContainer
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
@@ -29,17 +33,19 @@ import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
+import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
-import java.util.Optional
 
 class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver {
+
+    @TempDir lateinit var tempDir: Path
 
     val credentials = Credentials
         .create("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63")
 
     val gasProvider = DefaultGasProvider()
 
-    lateinit var pantheonContainer: KGenericContainer
+    lateinit var container: KGenericContainer
 
     lateinit var web3j: Web3j
 
@@ -51,35 +57,35 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
             .orElseThrow { ExtensionConfigurationException("@EVMTest not found") }
     }
 
-    override fun beforeAll(context: ExtensionContext?) {
-        pantheonContainer = KGenericContainer("pegasyseng/pantheon:1.2.0")
-            .withExposedPorts(8545, 8546)
-            .withCommand(
-                "--miner-enabled",
-                "--miner-coinbase=${credentials.address}",
-                "--rpc-http-enabled",
-                "--rpc-ws-enabled",
-                "--network=dev"
-            )
-            .waitingFor(Wait
-                .forHttp("/liveness")
-                .forStatusCode(200).forPort(8545))
+    override fun beforeAll(context: ExtensionContext) {
+        val evmTest = AnnotationUtils
+            .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow()
 
-        pantheonContainer.start()
+        container = ContainerBuilder()
+            .type(evmTest.type)
+            .version(evmTest.version)
+            .withGenesis(evmTest.genesis)
+            .build()
 
-        val port = pantheonContainer.getMappedPort(8545)
+        container.startNode()
 
         web3j = Web3j.build(
             HttpService(
-                "http://localhost:" + port!!
+                "http://localhost:" + container.rpcPort
             ), 500, Async.defaultExecutorService()
         )
 
-        transactionManager = FastRawTransactionManager(web3j, credentials)
+        transactionManager = FastRawTransactionManager(
+            web3j,
+            credentials,
+            PollingTransactionReceiptProcessor(
+                web3j,
+                1000,
+                30))
     }
 
     override fun afterAll(context: ExtensionContext) {
-        pantheonContainer.stop()
+        container.stop()
         web3j.shutdown()
     }
 
