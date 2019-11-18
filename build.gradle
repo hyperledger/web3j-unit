@@ -1,288 +1,90 @@
-buildscript {
-
-    ext.kotlinLoggingVersion = '1.6.24'
-    ext.logbackVersion = '1.2.3'
-
-    ext.junitVersion = '5.4.2'
-    ext.mockitoKotlinVersion = '1.6.0'
-
-    ext.testContainersVersion = '1.12.0'
-    ext.web3jVersion = '4.5.0'
-
-    repositories { mavenCentral() }
-}
-
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.50"
-    id "com.diffplug.gradle.spotless" version "3.25.0"
-    id 'org.web3j' version '4.4.0'
-
-    id "com.github.breadmoirai.github-release" version "2.2.9"
-    id "com.gradle.plugin-publish" version "0.10.0"
-    id 'com.jfrog.bintray' version '1.8.4'
-
-    // Required for JFrog Artifactory repository
-    id 'jacoco'
-    id 'maven-publish'
-
-    // Required for Maven Nexus repository
-    id 'maven'
-    id 'signing'
+    id 'java'
     id 'idea'
+    id 'jacoco'
+    id 'org.web3j' version '4.4.0'
+    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id 'io.codearte.nexus-staging' version '0.21.1'
+    id "de.marcphilipp.nexus-publish" version "0.4.0"
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+    id "de.undercouch.download" version "4.0.0"
 }
 
-dependencies { implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
-
-compileKotlin { kotlinOptions.jvmTarget = "1.8" }
-compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
-
-allprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
-
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
-                "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
-                "ch.qos.logback:logback-classic:$logbackVersion",
-                "org.testcontainers:testcontainers:$testContainersVersion",
-                "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-                "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-                "org.junit.jupiter:junit-jupiter-params:$junitVersion",
-                "org.web3j:core:$web3jVersion"
-    }
-
-    web3j {
-        generatedPackageName = 'org.web3j.{0}'
-        excludedContracts = ['Mortal']
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    compileKotlin {
-        dependsOn  'generateContractWrappers'
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        dependsOn  'generateTestContractWrappers'
-        kotlinOptions.jvmTarget = "1.8"
-    }
-
-    sourceSets {
-        main.kotlin.srcDirs += "${web3j.generatedFilesBaseDir}/main/java"
-        test.kotlin.srcDirs += "${web3j.generatedFilesBaseDir}/test/java"
-    }
-
-    apply plugin: 'com.diffplug.gradle.spotless'
-    // see https://github.com/diffplug/spotless/tree/master/plugin-gradle
-    spotless {
-        kotlin {
-            // This path needs to be relative to each project
-            target fileTree('.') {
-                include '**/*.kt'
-                exclude '**/.gradle/**'
-            }
-            // see https://github.com/shyiko/ktlint#standard-rules
-            ktlint().userData(['max_line_length': '100', 'insert_final_newline': 'true'])
-            licenseHeaderFile "${rootDir}/gradle/spotless.kotlin.license"  // License header file
-        }
-
-        groovyGradle {
-            target '*.gradle'
-            greclipse().configFile(rootProject.file('gradle/formatter.properties'))
-            endWithNewline()
-            paddedCell() // recommended hack to keep gradle files tidy
-        }
-    }
-}
+description 'Web3j-unit extension'
 
 ext {
-    ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
-    ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
-    ossrhRepoUrl = project.hasProperty('ossrhRepoUrl') ? project.property('ossrhRepoUrl') : System.getenv('OSSRH_REPO_URL')
-    bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    bintrayGpgPassphrase = project.hasProperty('bintrayGpgPassphrase') ? project.property('bintrayGpgPassphrase') : System.getenv('BINTRAY_GPG_PASSPHRASE')
-    isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
-    manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
+    web3jVersion = version
+    kotlinLoggingVersion = '1.6.24'
+    logbackVersion = '1.2.3'
+    junitVersion = '5.5.2'
+    mockitoKotlinVersion = '1.6.0'
+    testContainersVersion = '1.12.0'
 }
 
-task javadocJar(type: Jar) {
-    archiveClassifier = 'javadoc'
-    from javadoc
+nexusStaging {
+    username System.getenv('OSSRH_USERNAME')
+    password System.getenv('OSSRH_PASSWORD')
 }
 
-task sourcesJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
+apply {
+    [
+        'jacoco',
+        'java',
+        'javadoc',
+        'repositories',
+        'publish',
+        'spotless',
+    ].each { buildScript ->
+        download {
+            src "https://raw.githubusercontent.com/web3j/build-tools/master/gradle/$buildScript/build.gradle"
+            dest "$rootDir/gradle/$buildScript/build.gradle"
+            overwrite true
+            quiet true
+            onlyIfModified true
+        }
+        from("$rootDir/gradle/$buildScript/build.gradle")
+    }
 }
-
-artifacts { archives sourcesJar, javadocJar }
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar { classifier 'sources' }
-
-            artifact javadocJar { classifier 'javadoc' }
-
+        maven(MavenPublication) {
             pom {
-                name = project.name
-                description = project.description
-                url = "https://github.com/web3j/web3j-unit"
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                        distribution = "repo"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "iikirilov"
-                        name = "Ivaylo Kirilov"
-                        email = "iikirilov@gmail.com"
-                    }
-                }
                 scm {
-                    connection = "scm:git:https://github.com/web3j/web3j-unit.git"
+                    url = "https://github.com/web3j/web3j-unit"
+                    connection = "scm:https://github.com/web3j/web3j-unit.git"
                     developerConnection = "scm:git://github.com/web3j/web3j-unit.git"
-                    url = "https://github.com/web3j/web3j-unit.git"
                 }
             }
         }
     }
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-
-            onlyIf {
-                // Only run if this is a manual release triggered by a user, or an automated release for snapshots.
-                // We don't need to run this for automated releases.
-                isSnapshotVersion && ossrhUsername != '' && ossrhPassword != '' && ossrhRepoUrl != ''
-            }
-
-            repository(url: ossrhRepoUrl) {
-                authentication(
-                        userName: ossrhUsername,
-                        password: ossrhPassword
-                        )
-            }
-
-            pom.project {
-                name 'web3j-unit'
-                packaging 'jar'
-                description project.description
-                url 'https://web3j.io'
-
-                scm {
-                    connection 'scm:git:https://github.com/web3j/web3j-unit.git'
-                    url 'https://github.com/web3j/web3j-unit.git'
-                    developerConnection 'scm:git://github.com/web3j/web3j-unit.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'iikirilov'
-                        name 'Ivaylo Kirilov'
-                        email 'iikirilov@gmail.com'
-                    }
-                }
-            }
-        }
-    }
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+            "org.web3j:core:$web3jVersion",
+            "org.testcontainers:testcontainers:$testContainersVersion",
+            "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
+            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+            "org.junit.jupiter:junit-jupiter-params:$junitVersion",
+            "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
+            "ch.qos.logback:logback-classic:$logbackVersion"
 }
 
-bintray {
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['mavenJava']
-    publish = true
-    pkg {
-        repo = 'maven'
-        name = 'web3j-unit'
-        desc = project.description
-        userOrg = 'web3j'
-        licenses = ['Apache-2.0']
-        issueTrackerUrl = 'https://github.com/web3j/web3j-unit/issues'
-        vcsUrl = 'https://github.com/web3j/web3j-unit.git'
-        websiteUrl = 'https://web3j.io'
-        publicDownloadNumbers = true
-
-        version {
-            gpg {
-                sign = true
-                passphrase = bintrayGpgPassphrase
-            }
-            mavenCentralSync {
-                sync = true
-                user = ossrhUsername
-                password = ossrhPassword
-                close = '1'
-            }
-        }
-    }
+web3j {
+    generatedPackageName = 'org.web3j.{0}'
+    excludedContracts = ['Mortal']
 }
 
-task release {
-    dependsOn 'build'
-
-    doLast {
-        // Validates the user inputs before a release can be performed.
-        if (isSnapshotVersion) {
-            // Only need OSSRH details.
-            logger.lifecycle("About to perform {} snapshot release ...", manualRelease ? "a manual" : "an automated")
-
-            if (!ossrhUsername || !ossrhPassword || !ossrhRepoUrl) {
-                throw new InvalidUserDataException("Required parameters missing:  'ossrhUsername', 'ossrhPassword', 'ossrhRepoUrl'")
-            }
-
-            logger.lifecycle(" - ossrhUsername={}", ossrhUsername)
-            logger.lifecycle(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
-            logger.lifecycle(" - ossrhRepoUrl={}", ossrhRepoUrl)
-        } else {
-            // Release => Need OSSRH and bintray.
-            if (!ossrhUsername || !ossrhPassword || !ossrhRepoUrl) {
-                throw new InvalidUserDataException("Required parameters missing:  'ossrhUsername', 'ossrhPassword', 'ossrhRepoUrl'")
-            }
-            if (!bintrayUser || !bintrayKey || !bintrayGpgPassphrase) {
-                throw new InvalidUserDataException("Required parameters missing:  'bintrayUser', 'bintrayKey', 'bintrayGpgPassphrase'")
-            }
-            logger.lifecycle("About to perform {} full release ...", manualRelease ? "a manual" : "an automated")
-            logger.lifecycle(" - ossrhUsername={}", ossrhUsername)
-            logger.lifecycle(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
-            logger.lifecycle(" - ossrhRepoUrl={}", ossrhRepoUrl)
-            logger.lifecycle(" - bintrayUser={}", bintrayUser)
-            logger.lifecycle(" - bintrayKey={}", bintrayKey ? "provided" : "not_provided")
-            logger.lifecycle(" - bintrayGpgPassphrase={}", bintrayGpgPassphrase ? "provided" : "not_provided")
-        }
+compileKotlin {
+    dependsOn "generateContractWrappers"
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
-
-    // Snapshots go to nexus, non-snapshots go to bintray.
-    if (isSnapshotVersion) {
-        dependsOn 'uploadArchives'
-        tasks.findByName('uploadArchives').mustRunAfter 'build'
-    } else {
-        dependsOn 'bintrayUpload'
-        tasks.findByName('bintrayUpload').mustRunAfter 'build'
+}
+compileTestKotlin {
+    dependsOn "generateTestContractWrappers"
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
