@@ -1,5 +1,7 @@
 **⚠️ This is a work in progress! ⚠**
 
+[![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
+
 ### Getting Started
 
 1. Add dependency to gradle.
