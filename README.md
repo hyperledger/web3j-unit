@@ -1,23 +1,28 @@
+# web3j-evm [![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
+
 **⚠️ This is a work in progress! ⚠**
 
-[![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
+Web3j-unit is a [Junit 5](https://junit.org/junit5/docs/current/user-guide/) extension to streamline the creation of Ethereum contract tests.
+
+Multiple Ethereum implementations are supported including Geth and Besu. To run tests built using Web3j-unit, **docker is required** on the host.
+
+Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into the Junit runner.
 
 ### Getting Started
 
-1. Add dependency to gradle.
+1. Add dependency to gradle. **N.B.** Only snapshots are available at this time.
 
 ```groovy
    repositories {
-       maven()
+       maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
    }
 
    testCompile "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
 ```
 
-2. Create a new test with the `@EVMTest` annotation. To configure the 
-environment pass parameters into the `@EVMTest` annotation
+2. Create a new test with the `@EVMTest` annotation. An instance of Besu is used by default. To use Geth pass the node type into the annotation: `@EVMTest(NodeType.GETH)`
 
-```java
+```kotlin
 @EVMTest
 class GreeterTest {
 
@@ -26,7 +31,7 @@ class GreeterTest {
 
 3. Inject instance of `Web3j` `TransactionManager` and `ContractGasProvider` in your test method.
 
-```java
+```kotlin
 @EVMTest
 class GreeterTest {
 
@@ -41,7 +46,7 @@ class GreeterTest {
 
 4. Deploy your contract in the test.
 
-```java
+```kotlin
 @EVMTest
 class GreeterTest {
 
