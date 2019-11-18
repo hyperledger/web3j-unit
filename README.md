@@ -1,4 +1,4 @@
-# web3j-evm [![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
+# Web3j-unit [![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
 
 **⚠️ This is a work in progress! ⚠**
 
