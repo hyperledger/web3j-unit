@@ -30,11 +30,11 @@ jobs:
     script: "./gradlew check -Pversion=${TRAVIS_BRANCH#'release/'} && ./scripts/github-release.sh"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-before_install:
-- |
-  if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
-    openssl aes-256-cbc -K $encrypted_661235106ac6_key -iv $encrypted_661235106ac6_iv -in web3j.asc.enc -out web3j.asc -d
-  fi
+#before_install:
+#- |
+#  if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
+#    openssl aes-256-cbc -K $encrypted_661235106ac6_key -iv $encrypted_661235106ac6_iv -in web3j.asc.enc -out web3j.asc -d
+#  fi
 env:
   global:
   - secure: bMq4UDE/u66XSRv3gSAP/p36RMHFuk1lDk+HpDFw6HPJNzSNU4PHJZrzzr3cvkea6GF7lCutKG//bzeQkgsHesj27WNmj9PRWZYVfdhpRADm8kwBwaK/lRN9JIQOpZ5D1NTIecOL/iPMNU3FXQ7UVTLUx3EbrY9CpNKIFB/n9jTUjJgS1nlr5ysMfaQ9SfcFnJ4r87o9oeyiAczE74laD1hzVYDkiNUOkbdruxv6ewQqJJYEQWzjNyHjbTFjxiGQq8WdPLgu0FpVDSzGfB9h+BdpAqNvP7xfko4hTKHofLkhDClcolWSPzIaCS/09hdJdsrNyBRFpEB37nF3PLNfmfIYjXVWtRU0Xz/Ti77Bqr7C/3N+13LRrn8uLSf/yF0PByFAiaEj7RMQfpkJTmtCe7Y3JPD1PmGrUSGCVWWWR6wgle9P66lEiBqHsNvx7uYJkdnjcfbUwJaXqPHjHnYeOU3sKYWSuMjz4XSDBnRVQNkmzF554UnWmzGh48vva6hDMRrYiGc5eN0BYvFQTm5slTvIM4ilnEQQDtfWfgBCrSns+lAP1ky8E7BCoH9VCx5w9ljYjENcrc07LzWICwHSUPsjoJGvd9nJNspPdThInpqsH5izlW8kJzBCjoFuCdmQfy4xAYCqz3OvYPDHF2lCX81AFwoGqJbpzNlfgreK0I8=
