@@ -16,6 +16,8 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.utility.MountableFile
+import org.web3j.protocol.Web3jService
+import org.web3j.protocol.http.HttpService
 
 // https://github.com/testcontainers/testcontainers-java/issues/318
 open class KGenericContainer(
@@ -26,11 +28,12 @@ open class KGenericContainer(
     private val startUpScript: String,
     private val genesis: String
 ) :
-    GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")) {
+    GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")),
+    IKGenericContainer {
 
     var rpcPort: Int = 0
 
-    fun startNode() {
+    override fun startNode() {
         resolveGenesis()
         withLogConsumer { println(it.utf8String) }
         withExposedPorts(8545)
@@ -46,6 +49,8 @@ open class KGenericContainer(
         start()
         rpcPort = getMappedPort(8545)
     }
+
+    override fun createService(): Web3jService = HttpService("http://localhost:" + this.rpcPort)
 
     open fun resolveGenesis() {
         genesis.let {
