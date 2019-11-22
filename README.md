@@ -15,8 +15,10 @@ Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into t
 ```groovy
    repositories {
        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+       maven { url "https://dl.bintray.com/ethereum/maven/" }
    }
 
+   implementation "org.web3j:core:4.6.0-SNAPSHOT"
    testCompile "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
 ```
 
