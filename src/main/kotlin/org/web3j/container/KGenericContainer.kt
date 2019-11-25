@@ -29,11 +29,11 @@ open class KGenericContainer(
     private val genesis: String
 ) :
     GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")),
-    IKGenericContainer {
+    GenericService {
 
     var rpcPort: Int = 0
 
-    override fun startNode() {
+    override fun startService(): Web3jService {
         resolveGenesis()
         withLogConsumer { println(it.utf8String) }
         withExposedPorts(8545)
@@ -48,9 +48,9 @@ open class KGenericContainer(
         waitingFor(withWaitStrategy())
         start()
         rpcPort = getMappedPort(8545)
-    }
 
-    override fun createService(): Web3jService = HttpService("http://localhost:" + this.rpcPort)
+        return HttpService("http://localhost:$rpcPort")
+    }
 
     open fun resolveGenesis() {
         genesis.let {

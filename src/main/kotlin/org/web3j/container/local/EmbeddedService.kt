@@ -10,14 +10,20 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.web3j.container
+package org.web3j.container.local
 
+import org.hyperledger.besu.ethereum.vm.OperationTracer
+import org.web3j.container.GenericService
+import org.web3j.evm.Configuration
+import org.web3j.evm.LocalWeb3jService
 import org.web3j.protocol.Web3jService
 
-interface IKGenericContainer {
-    fun startNode()
+class EmbeddedService(private val configuration: Configuration, private val operationTracer: OperationTracer) : GenericService {
+    override fun startService(): Web3jService {
+        return LocalWeb3jService(configuration, operationTracer)
+    }
 
-    fun stop()
-
-    fun createService(): Web3jService
+    override fun close() {
+        // Nothing to close
+    }
 }

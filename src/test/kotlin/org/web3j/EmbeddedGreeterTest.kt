@@ -19,8 +19,8 @@ import org.web3j.protocol.Web3j
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
-@EVMTest(NodeType.LOCAL)
-class LocalGreeterTest {
+@EVMTest(NodeType.EMBEDDED)
+class EmbeddedGreeterTest {
     @Test
     fun greeterDeploys(
         web3j: Web3j,

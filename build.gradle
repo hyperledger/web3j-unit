@@ -19,9 +19,6 @@ ext {
     junitVersion = '5.5.2'
     mockitoKotlinVersion = '1.6.0'
     testContainersVersion = '1.12.0'
-    log4jVersion = '2.12.1'
-    guavaVersion = '28.1-jre'
-    jacksonVersion = '2.10.0'
 }
 
 nexusStaging {
@@ -72,12 +69,7 @@ dependencies {
             "org.junit.jupiter:junit-jupiter-api:$junitVersion",
             "org.junit.jupiter:junit-jupiter-params:$junitVersion",
             "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
-            "ch.qos.logback:logback-classic:$logbackVersion",
-            "org.apache.logging.log4j:log4j-api:$log4jVersion",
-            "org.apache.logging.log4j:log4j-core:$log4jVersion",
-            "com.google.guava:guava:$guavaVersion",
-            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+            "ch.qos.logback:logback-classic:$logbackVersion"
 }
 
 web3j {

@@ -16,5 +16,5 @@ enum class NodeType {
     BESU,
     GETH,
     PARITY,
-    LOCAL
+    EMBEDDED
 }

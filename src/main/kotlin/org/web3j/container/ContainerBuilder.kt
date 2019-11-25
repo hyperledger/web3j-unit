@@ -17,7 +17,7 @@ import org.web3j.NodeType
 import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.geth.GethContainer
-import org.web3j.container.local.LocalContainer
+import org.web3j.container.local.EmbeddedService
 import org.web3j.evm.Configuration
 import org.web3j.evm.PassthroughTracer
 
@@ -46,11 +46,11 @@ class ContainerBuilder {
         this.selfAddress = selfAddress
     }
 
-    fun build(): IKGenericContainer {
+    fun build(): GenericService {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
-            NodeType.LOCAL -> LocalContainer(Configuration(Address(selfAddress), 10), PassthroughTracer())
+            NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
         }
     }
