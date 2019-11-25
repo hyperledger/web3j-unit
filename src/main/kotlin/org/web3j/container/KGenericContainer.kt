@@ -37,7 +37,7 @@ open class KGenericContainer(
         resolveGenesis()
         withLogConsumer { println(it.utf8String) }
         withExposedPorts(8545)
-        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript), "/start.sh")
+        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript, 755), "/start.sh")
         resourceFiles.forEach { (source, target) ->
             withCopyFileToContainer(MountableFile.forClasspathResource(source), target)
         }
