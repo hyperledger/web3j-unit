@@ -17,7 +17,7 @@ import org.web3j.NodeType
 import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.geth.GethContainer
-import org.web3j.container.local.EmbeddedService
+import org.web3j.container.embedded.EmbeddedService
 import org.web3j.evm.Configuration
 import org.web3j.evm.PassthroughTracer
 
