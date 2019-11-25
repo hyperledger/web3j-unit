@@ -15,12 +15,12 @@ package org.web3j.container.embedded
 import org.hyperledger.besu.ethereum.vm.OperationTracer
 import org.web3j.container.GenericService
 import org.web3j.evm.Configuration
-import org.web3j.evm.LocalWeb3jService
+import org.web3j.evm.EmbeddedWeb3jService
 import org.web3j.protocol.Web3jService
 
 class EmbeddedService(private val configuration: Configuration, private val operationTracer: OperationTracer) : GenericService {
     override fun startService(): Web3jService {
-        return LocalWeb3jService(configuration, operationTracer)
+        return EmbeddedWeb3jService(configuration, operationTracer)
     }
 
     override fun close() {
