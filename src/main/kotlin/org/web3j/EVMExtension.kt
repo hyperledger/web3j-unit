@@ -24,7 +24,7 @@ import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.junit.jupiter.api.io.TempDir
 import org.junit.platform.commons.util.AnnotationUtils
-import org.web3j.container.ContainerBuilder
+import org.web3j.container.ServiceBuilder
 import org.web3j.container.GenericService
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -44,7 +44,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
 
     val gasProvider = DefaultGasProvider()
 
-    lateinit var container: GenericService
+    lateinit var service: GenericService
 
     lateinit var web3j: Web3j
 
@@ -60,16 +60,14 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
         val evmTest = AnnotationUtils
             .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow()
 
-        container = ContainerBuilder()
+        service = ServiceBuilder()
             .type(evmTest.type)
             .version(evmTest.version)
             .withGenesis(evmTest.genesis)
             .withSelfAddress(credentials.address)
             .build()
 
-        val service = container.startService()
-
-        web3j = Web3j.build(service, 500, Async.defaultExecutorService())
+        web3j = Web3j.build(service.startService(), 500, Async.defaultExecutorService())
 
         transactionManager = FastRawTransactionManager(
             web3j,
@@ -81,7 +79,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
     }
 
     override fun afterAll(context: ExtensionContext) {
-        container.close()
+        service.close()
         web3j.shutdown()
     }
 

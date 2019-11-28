@@ -21,7 +21,7 @@ import org.web3j.container.embedded.EmbeddedService
 import org.web3j.evm.Configuration
 import org.web3j.evm.PassthroughTracer
 
-class ContainerBuilder {
+class ServiceBuilder {
 
     private lateinit var genesisPath: String
     private lateinit var type: NodeType
@@ -50,8 +50,8 @@ class ContainerBuilder {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
-            NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
+            NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
         }
     }
 }
