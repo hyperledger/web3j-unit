@@ -18,8 +18,8 @@ Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into t
        maven { url "https://dl.bintray.com/ethereum/maven/" }
    }
 
-   implementation "org.web3j:core:4.6.0-SNAPSHOT"
-   testCompile "org.web3j:web3j-unit:4.6.0-SNAPSHOT"
+   implementation "org.web3j:core:4.5.8"
+   testCompile "org.web3j:web3j-unit:4.5.8"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An instance of Besu is used by default. To use Geth pass the node type into the annotation: `@EVMTest(NodeType.GETH)`
