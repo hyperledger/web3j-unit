@@ -14,13 +14,18 @@ package org.web3j.container
 
 import java.lang.RuntimeException
 import org.web3j.NodeType
+import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.geth.GethContainer
+import org.web3j.container.embedded.EmbeddedService
+import org.web3j.evm.Configuration
+import org.web3j.evm.PassthroughTracer
 
-class ContainerBuilder {
+class ServiceBuilder {
 
     private lateinit var genesisPath: String
     private lateinit var type: NodeType
+    private lateinit var selfAddress: String
     private var version: String? = null
     private val resourceFiles: HashMap<String, String> = hashMapOf()
     private val hostFiles: HashMap<String, String> = hashMapOf()
@@ -37,11 +42,16 @@ class ContainerBuilder {
         this.genesisPath = genesisPath
     }
 
-    fun build(): KGenericContainer {
+    fun withSelfAddress(selfAddress: String) = apply {
+        this.selfAddress = selfAddress
+    }
+
+    fun build(): GenericService {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
+            NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
         }
     }
 }

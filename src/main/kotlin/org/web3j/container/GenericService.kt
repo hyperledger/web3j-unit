@@ -10,11 +10,10 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.web3j
+package org.web3j.container
 
-enum class NodeType {
-    BESU,
-    GETH,
-    PARITY,
-    EMBEDDED
+import org.web3j.protocol.Web3jService
+
+interface GenericService : AutoCloseable {
+    fun startService(): Web3jService
 }

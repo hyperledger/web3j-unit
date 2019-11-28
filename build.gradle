@@ -63,6 +63,7 @@ publishing {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.web3j:core:$web3jVersion",
+            "org.web3j:web3j-evm:$web3jVersion",
             "org.testcontainers:testcontainers:$testContainersVersion",
             "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
             "org.junit.jupiter:junit-jupiter-api:$junitVersion",
@@ -82,6 +83,7 @@ compileKotlin {
         jvmTarget = "1.8"
     }
 }
+
 compileTestKotlin {
     dependsOn "generateTestContractWrappers"
     kotlinOptions {

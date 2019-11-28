@@ -24,11 +24,10 @@ import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.junit.jupiter.api.io.TempDir
 import org.junit.platform.commons.util.AnnotationUtils
-import org.web3j.container.ContainerBuilder
-import org.web3j.container.KGenericContainer
+import org.web3j.container.ServiceBuilder
+import org.web3j.container.GenericService
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
-import org.web3j.protocol.http.HttpService
 import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
@@ -45,7 +44,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
 
     val gasProvider = DefaultGasProvider()
 
-    lateinit var container: KGenericContainer
+    lateinit var service: GenericService
 
     lateinit var web3j: Web3j
 
@@ -61,19 +60,14 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
         val evmTest = AnnotationUtils
             .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow()
 
-        container = ContainerBuilder()
+        service = ServiceBuilder()
             .type(evmTest.type)
             .version(evmTest.version)
             .withGenesis(evmTest.genesis)
+            .withSelfAddress(credentials.address)
             .build()
 
-        container.startNode()
-
-        web3j = Web3j.build(
-            HttpService(
-                "http://localhost:" + container.rpcPort
-            ), 500, Async.defaultExecutorService()
-        )
+        web3j = Web3j.build(service.startService(), 500, Async.defaultExecutorService())
 
         transactionManager = FastRawTransactionManager(
             web3j,
@@ -85,7 +79,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
     }
 
     override fun afterAll(context: ExtensionContext) {
-        container.stop()
+        service.close()
         web3j.shutdown()
     }
 
