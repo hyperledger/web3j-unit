@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'org.web3j' version '4.4.0'
+    id "com.jfrog.bintray" version "1.8.4"
     id "com.diffplug.gradle.spotless" version "3.25.0"
     id 'io.codearte.nexus-staging' version '0.21.1'
     id "de.marcphilipp.nexus-publish" version "0.4.0"
@@ -21,13 +22,9 @@ ext {
     testContainersVersion = '1.12.0'
 }
 
-nexusStaging {
-    username System.getenv('OSSRH_USERNAME')
-    password System.getenv('OSSRH_PASSWORD')
-}
-
 apply {
     [
+        'bintray',
         'jacoco',
         'java',
         'javadoc',
@@ -43,20 +40,6 @@ apply {
             onlyIfModified true
         }
         from("$rootDir/gradle/$buildScript/build.gradle")
-    }
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            pom {
-                scm {
-                    url = "https://github.com/web3j/web3j-unit"
-                    connection = "scm:https://github.com/web3j/web3j-unit.git"
-                    developerConnection = "scm:git://github.com/web3j/web3j-unit.git"
-                }
-            }
-        }
     }
 }
 
