@@ -1,12 +1,12 @@
 # Web3j-unit [![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
 
-**⚠️ This is a work in progress! ⚠**
-
 Web3j-unit is a [Junit 5](https://junit.org/junit5/docs/current/user-guide/) extension to streamline the creation of Ethereum contract tests.
 
 Multiple Ethereum implementations are supported including Geth and Besu. To run tests built using Web3j-unit, **docker is required** on the host.
 
 Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into the Junit runner.
+
+You can find a sample [here](https://github.com/cfelde/web3j-unitexample).
 
 ### Getting Started
 
