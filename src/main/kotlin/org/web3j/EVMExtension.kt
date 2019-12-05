@@ -58,7 +58,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
 
     override fun beforeAll(context: ExtensionContext) {
         val evmTest = AnnotationUtils
-            .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow()
+            .findAnnotation(context.requiredTestClass, EVMTest::class.java).orElseThrow { RuntimeException("Unable to find EVMTest annotation") }
 
         service = ServiceBuilder()
             .type(evmTest.type)
