@@ -10,12 +10,18 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.web3j
+package org.web3j.container.custom
 
-enum class NodeType {
-    BESU,
-    GETH,
-    PARITY,
-    EMBEDDED,
-    COMPOSE
+import org.web3j.container.KDockerComposeContainer
+import org.web3j.protocol.Web3jService
+import org.web3j.protocol.http.HttpService
+
+open class DockerComposeCustom(dockerComposePath: String) :
+    KDockerComposeContainer(dockerComposePath) {
+    override fun startService(): Web3jService {
+        // specific to Concord Docker image
+        withExposedService("ethrpc1", 8545)
+        start()
+        return HttpService("http://localhost:8545")
+    }
 }

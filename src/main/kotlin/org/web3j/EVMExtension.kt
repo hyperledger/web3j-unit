@@ -64,6 +64,7 @@ class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, Pa
             .type(evmTest.type)
             .version(evmTest.version)
             .withGenesis(evmTest.genesis)
+            .withDockerCompose(evmTest.dockerCompose)
             .withSelfAddress(credentials.address)
             .build()
 

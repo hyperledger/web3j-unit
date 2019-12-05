@@ -42,6 +42,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(EVMExtension::class)
 annotation class EVMTest(
     val type: NodeType = NodeType.EMBEDDED,
+    val dockerCompose: String = "test.yml",
     val version: String = "latest",
     val genesis: String = "dev"
 )
