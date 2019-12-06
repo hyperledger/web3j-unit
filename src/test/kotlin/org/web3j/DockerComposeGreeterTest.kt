@@ -19,9 +19,7 @@ import org.web3j.protocol.Web3j
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
-// Ensure build the concord images locally by following https://concord.readthedocs.io/en/latest/getting-started.html
-// We can publish the images on web3j docker-hub and use them in future.
-@EVMTest(NodeType.COMPOSE, "src/test/resources/simple4.yml")
+@EVMComposeTest("src/test/resources/geth.yml", "node1", 8545)
 class DockerComposeGreeterTest {
 
     @Test
