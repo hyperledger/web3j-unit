@@ -8,4 +8,4 @@ services:
     volumes:
       - ../resources/geth:/geth
     entrypoint:
-      - /geth/geth_start.sh
+      - /geth/compose_start.sh
