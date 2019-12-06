@@ -14,8 +14,7 @@ You can find a sample [here](https://github.com/cfelde/web3j-unitexample).
 
 ```groovy
    repositories {
-       maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-       maven { url "https://dl.bintray.com/ethereum/maven/" }
+      mavenCentral()
    }
 
    implementation "org.web3j:core:4.5.8"
