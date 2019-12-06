@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'idea'
     id 'jacoco'
-    id 'org.web3j' version '4.4.0'
     id "com.jfrog.bintray" version "1.8.4"
     id "com.diffplug.gradle.spotless" version "3.25.0"
     id 'io.codearte.nexus-staging' version '0.21.1'
@@ -55,20 +54,13 @@ dependencies {
             "org.junit.jupiter:junit-jupiter-params:$junitVersion"
 }
 
-web3j {
-    generatedPackageName = 'org.web3j.{0}'
-    excludedContracts = ['Mortal']
-}
-
 compileKotlin {
-    dependsOn "generateContractWrappers"
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 compileTestKotlin {
-    dependsOn "generateTestContractWrappers"
     kotlinOptions {
         jvmTarget = "1.8"
     }
