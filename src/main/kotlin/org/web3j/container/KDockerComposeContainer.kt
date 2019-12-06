@@ -14,11 +14,19 @@ package org.web3j.container
 
 import org.testcontainers.containers.DockerComposeContainer
 import org.web3j.protocol.Web3jService
+import org.web3j.protocol.http.HttpService
 import java.io.File
 
-open class KDockerComposeContainer(dockerComposePath: String) :
+open class KDockerComposeContainer(
+    dockerComposePath: String,
+    private val serviceName: String,
+    private val containerPort: Int
+) :
     DockerComposeContainer<KDockerComposeContainer>(File(dockerComposePath)), GenericService {
     override fun startService(): Web3jService {
-        TODO("not implemented")
+        withExposedService(serviceName, containerPort)
+        start()
+        val mappedPort = getServicePort(serviceName, containerPort)
+        return HttpService("http://localhost:$mappedPort")
     }
 }

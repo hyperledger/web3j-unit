@@ -13,15 +13,10 @@
 package org.web3j.container.custom
 
 import org.web3j.container.KDockerComposeContainer
-import org.web3j.protocol.Web3jService
-import org.web3j.protocol.http.HttpService
 
-open class DockerComposeCustom(dockerComposePath: String) :
-    KDockerComposeContainer(dockerComposePath) {
-    override fun startService(): Web3jService {
-        // specific to Concord Docker image
-        withExposedService("ethrpc1", 8545)
-        start()
-        return HttpService("http://localhost:8545")
-    }
-}
+open class DockerComposeCustom(
+    dockerComposePath: String,
+    serviceName: String,
+    containerPort: Int
+) :
+    KDockerComposeContainer(dockerComposePath, serviceName, containerPort)

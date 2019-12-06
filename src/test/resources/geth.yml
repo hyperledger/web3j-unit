@@ -1,0 +1,11 @@
+version: '3'
+services:
+  node1:
+    image: ethereum/client-go
+    ports:
+      - 8545:8545
+      - 30303:30303
+    volumes:
+      - ../resources/geth:/geth
+    entrypoint:
+      - /geth/geth_start.sh
