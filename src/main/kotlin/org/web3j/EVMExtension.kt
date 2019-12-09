@@ -51,7 +51,7 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
     lateinit var transactionManager: TransactionManager
 
     override fun evaluateExecutionCondition(context: ExtensionContext): ConditionEvaluationResult {
-        return findEvmTests(context)
+        return findEvmTests<EVMTest>(context)
             .map { ConditionEvaluationResult.enabled("EVMTest enabled") }
             .orElseThrow { ExtensionConfigurationException("@EVMTest not found") }
     }
@@ -104,11 +104,11 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
         }
     }
 
-    private fun findEvmTests(context: ExtensionContext): Optional<EVMTest> {
+    inline fun <reified T : Annotation> findEvmTests(context: ExtensionContext): Optional<T> {
         var current = Optional.of(context)
         while (current.isPresent) {
             val evmTest = AnnotationUtils
-                .findAnnotation(current.get().requiredTestClass, EVMTest::class.java)
+                .findAnnotation(current.get().requiredTestClass, T::class.java)
             if (evmTest.isPresent) {
                 return evmTest
             }

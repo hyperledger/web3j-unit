@@ -21,7 +21,6 @@ import org.web3j.protocol.Web3j
 import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
-import java.util.Optional
 
 class EVMComposeExtension : EVMExtension() {
 
@@ -49,20 +48,8 @@ class EVMComposeExtension : EVMExtension() {
     }
 
     override fun evaluateExecutionCondition(context: ExtensionContext): ConditionEvaluationResult {
-        return findEvmComposeTests(context)
+        return findEvmTests<EVMComposeTest>(context)
             .map { ConditionEvaluationResult.enabled("EVMComposeTest enabled") }
             .orElseThrow { ExtensionConfigurationException("@EVMComposeTest not found") }
-    }
-    private fun findEvmComposeTests(context: ExtensionContext): Optional<EVMComposeTest> {
-        var current = Optional.of(context)
-        while (current.isPresent) {
-            val evmTest = AnnotationUtils
-                .findAnnotation(current.get().requiredTestClass, EVMComposeTest::class.java)
-            if (evmTest.isPresent) {
-                return evmTest
-            }
-            current = current.get().parent
-        }
-        return Optional.empty()
     }
 }
