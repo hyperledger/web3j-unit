@@ -65,3 +65,63 @@ class GreeterTest {
 ```
 
 5. Run the test!
+
+### Using a custom docker-compose file
+
+1. Add dependency to gradle. **N.B.** Only snapshots are available at this time.
+   
+```groovy
+  repositories {
+     mavenCentral()
+  }
+
+  implementation "org.web3j:core:4.5.8"
+  testCompile "org.web3j:web3j-unit:4.5.8"
+```
+
+2. Create a new test with the `@EVMComposeTest` annotation.
+By default, uses `test.yml` file in the project home, and runs `web3j` on service name `node1` exposing the port `8545`. 
+Can be customised to use specific docker-compose file, service name and port by `@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)`
+   
+```kotlin
+@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)
+class GreeterTest {
+
+}
+```
+
+3. Inject instance of `Web3j` `TransactionManager` and `ContractGasProvider` in your test method.
+
+```kotlin
+@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)
+class GreeterTest {
+
+@Test
+    fun greeterDeploys(
+        web3j: Web3j,
+        transactionManager: TransactionManager,
+        gasProvider: ContractGasProvider
+    ) {}
+}
+```
+
+4. Deploy your contract in the test.
+
+```kotlin
+@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)
+class GreeterTest {
+
+    @Test
+    fun greeterDeploys(
+        web3j: Web3j,
+        transactionManager: TransactionManager,
+        gasProvider: ContractGasProvider
+    ) {
+        val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
+        val greeting = greeter.greet().send()
+        assertEquals("Hello EVM", greeting)
+    }
+}
+```
+
+5. Run the test!
