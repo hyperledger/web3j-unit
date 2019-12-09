@@ -26,14 +26,14 @@ import java.util.Optional
 class EVMComposeExtension : EVMExtension() {
 
     override fun beforeAll(context: ExtensionContext) {
-        val evmCustomTest = AnnotationUtils
+        val evmComposeTest = AnnotationUtils
             .findAnnotation(context.requiredTestClass, EVMComposeTest::class.java).orElseThrow()
 
         super.service = ServiceBuilder()
             .type(NodeType.COMPOSE)
-            .withDockerCompose(evmCustomTest.dockerCompose)
-            .withServiceName(evmCustomTest.service)
-            .withServicePort(evmCustomTest.servicePort)
+            .withDockerCompose(evmComposeTest.dockerCompose)
+            .withServiceName(evmComposeTest.service)
+            .withServicePort(evmComposeTest.servicePort)
             .withSelfAddress(super.credentials.address)
             .build()
 
@@ -49,11 +49,11 @@ class EVMComposeExtension : EVMExtension() {
     }
 
     override fun evaluateExecutionCondition(context: ExtensionContext): ConditionEvaluationResult {
-        return findEvmTests(context)
-            .map { ConditionEvaluationResult.enabled("EVMCustomTest enabled") }
-            .orElseThrow { ExtensionConfigurationException("@EVMCustomTest not found") }
+        return findEvmComposeTests(context)
+            .map { ConditionEvaluationResult.enabled("EVMComposeTest enabled") }
+            .orElseThrow { ExtensionConfigurationException("@EVMComposeTest not found") }
     }
-    private fun findEvmTests(context: ExtensionContext): Optional<EVMComposeTest> {
+    private fun findEvmComposeTests(context: ExtensionContext): Optional<EVMComposeTest> {
         var current = Optional.of(context)
         while (current.isPresent) {
             val evmTest = AnnotationUtils

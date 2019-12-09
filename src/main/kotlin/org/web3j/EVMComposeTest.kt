@@ -15,7 +15,7 @@ package org.web3j
 import org.junit.jupiter.api.extension.ExtendWith
 
 /**
- * {@code @EVMCustomTest} is a JUnit Jupiter extension to activate automatic
+ * {@code @EVMComposeTest} is a JUnit Jupiter extension to activate automatic
  * startup and stop of Ethereum Services used in a test case.
  *
  * <p><strong>Note:</strong> This extension has only be tested with sequential
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith
  * <p>Example:</p>
  *
  * <pre>
- * &#64;EVMCustomTest("<docker-compose file path>", "<service name>", containerPort)
+ * &#64;EVMComposeTest("<docker-compose file path>", "<service name>", containerPort)
  * class MyContractTest {
  *
  *     &#64;Test
