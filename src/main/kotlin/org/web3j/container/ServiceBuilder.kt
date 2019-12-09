@@ -26,9 +26,14 @@ class ServiceBuilder {
     private lateinit var genesisPath: String
     private lateinit var type: NodeType
     private lateinit var selfAddress: String
+    private lateinit var dockerCompose: String
     private var version: String? = null
     private val resourceFiles: HashMap<String, String> = hashMapOf()
     private val hostFiles: HashMap<String, String> = hashMapOf()
+
+    // Default values set to use the docker-compose file
+    private var serviceName = "ethrpc1"
+    private var containerPort = 8545
 
     fun type(type: NodeType) = apply {
         this.type = type
@@ -42,8 +47,20 @@ class ServiceBuilder {
         this.genesisPath = genesisPath
     }
 
+    fun withDockerCompose(dockerCompose: String) = apply {
+        this.dockerCompose = dockerCompose
+    }
+
     fun withSelfAddress(selfAddress: String) = apply {
         this.selfAddress = selfAddress
+    }
+
+    fun withServiceName(serviceName: String) = apply {
+        this.serviceName = serviceName
+    }
+
+    fun withServicePort(containerPort: Int) = apply {
+        this.containerPort = containerPort
     }
 
     fun build(): GenericService {
@@ -52,6 +69,7 @@ class ServiceBuilder {
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
             NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
+            NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, containerPort)
         }
     }
 }
