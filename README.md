@@ -17,8 +17,8 @@ You can find a sample [here](https://github.com/cfelde/web3j-unitexample).
       mavenCentral()
    }
 
-   implementation "org.web3j:core:4.5.9"
-   testCompile "org.web3j:web3j-unit:4.5.9"
+   implementation "org.web3j:core:4.5.10"
+   testCompile "org.web3j:web3j-unit:4.5.10"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An instance of Besu is used by default. To use Geth pass the node type into the annotation: `@EVMTest(NodeType.GETH)`
@@ -75,8 +75,8 @@ class GreeterTest {
      mavenCentral()
   }
 
-  implementation "org.web3j:core:4.5.9"
-  testCompile "org.web3j:web3j-unit:4.5.9"
+  implementation "org.web3j:core:4.5.10"
+  testCompile "org.web3j:web3j-unit:4.5.10"
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
