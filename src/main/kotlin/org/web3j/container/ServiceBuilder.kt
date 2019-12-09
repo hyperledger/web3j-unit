@@ -16,7 +16,6 @@ import java.lang.RuntimeException
 import org.web3j.NodeType
 import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer
-import org.web3j.container.custom.DockerComposeCustom
 import org.web3j.container.geth.GethContainer
 import org.web3j.container.embedded.EmbeddedService
 import org.web3j.evm.Configuration
@@ -70,7 +69,7 @@ class ServiceBuilder {
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
             NodeType.EMBEDDED -> EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
-            NodeType.COMPOSE -> DockerComposeCustom(dockerCompose, serviceName, containerPort)
+            NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, containerPort)
         }
     }
 }
