@@ -8,6 +8,8 @@ Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into t
 
 You can find a sample [here](https://github.com/cfelde/web3j-unitexample).
 
+You can find an example using docker-compose [here](https://github.com/Puneetha17/web3j-unit-docker-compose-example)
+
 ### Getting Started
 
 1. Add dependency to gradle.
