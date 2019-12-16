@@ -18,7 +18,7 @@ import org.web3j.evm.Configuration
 import org.web3j.evm.EmbeddedWeb3jService
 import org.web3j.protocol.Web3jService
 
-class EmbeddedService(private val configuration: Configuration, private val operationTracer: OperationTracer) : GenericService {
+class EmbeddedService(val configuration: Configuration, val operationTracer: OperationTracer) : GenericService {
     override fun startService(): Web3jService {
         return EmbeddedWeb3jService(configuration, operationTracer)
     }
