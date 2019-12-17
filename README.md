@@ -6,9 +6,9 @@ Multiple Ethereum implementations are supported including Geth and Besu. To run 
 
 Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into the Junit runner.
 
-You can find a sample [here](https://github.com/cfelde/web3j-unitexample).
+You can find a sample [here](https://github.com/web3j/web3j-unitexample).
 
-You can find an example using docker-compose [here](https://github.com/Puneetha17/web3j-unit-docker-compose-example)
+You can find an example using docker-compose [here](https://github.com/web3j/web3j-unit-docker-compose-example). This spins up VMWare Concord nodes using a docker-compose file. 
 
 ### Getting Started
 
