@@ -23,7 +23,7 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
    testCompile "org.web3j:web3j-unit:4.5.10"
 ```
 
-2. Create a new test with the `@EVMTest` annotation. An instance of Besu is used by default. To use Geth pass the node type into the annotation: `@EVMTest(NodeType.GETH)`
+2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`
 
 ```kotlin
 @EVMTest
