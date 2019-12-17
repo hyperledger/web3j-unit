@@ -17,6 +17,7 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
 ```groovy
    repositories {
       mavenCentral()
+      jcenter()
    }
 
    implementation "org.web3j:core:4.5.10"
@@ -38,12 +39,13 @@ class GreeterTest {
 @EVMTest
 class GreeterTest {
 
-@Test
+    @Test
     fun greeterDeploys(
         web3j: Web3j,
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {}
+
 }
 ```
 
@@ -63,6 +65,7 @@ class GreeterTest {
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)
     }
+
 }
 ```
 
@@ -75,6 +78,7 @@ class GreeterTest {
 ```groovy
   repositories {
      mavenCentral()
+     jcenter()
   }
 
   implementation "org.web3j:core:4.5.10"
@@ -99,12 +103,13 @@ class GreeterTest {
 @EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)
 class GreeterTest {
 
-@Test
+    @Test
     fun greeterDeploys(
         web3j: Web3j,
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {}
+
 }
 ```
 
@@ -124,6 +129,7 @@ class GreeterTest {
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)
     }
+
 }
 ```
 
