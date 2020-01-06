@@ -14,6 +14,8 @@ package org.web3j
 
 import java.nio.file.Path
 import java.util.Optional
+import org.junit.jupiter.api.io.TempDir
+import org.junit.platform.commons.util.AnnotationUtils
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ConditionEvaluationResult
@@ -22,11 +24,12 @@ import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
-import org.junit.jupiter.api.io.TempDir
-import org.junit.platform.commons.util.AnnotationUtils
+import org.junit.jupiter.api.extension.TestWatcher
 import org.web3j.container.ServiceBuilder
 import org.web3j.container.GenericService
+import org.web3j.container.embedded.EmbeddedService
 import org.web3j.crypto.Credentials
+import org.web3j.evm.PassthroughTracer
 import org.web3j.protocol.Web3j
 import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.TransactionManager
@@ -35,7 +38,7 @@ import org.web3j.tx.gas.DefaultGasProvider
 import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
 
-open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver {
+open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver, TestWatcher {
 
     @TempDir lateinit var tempDir: Path
 
@@ -115,5 +118,38 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
             current = current.get().parent
         }
         return Optional.empty()
+    }
+
+    override fun testSuccessful(context: ExtensionContext?) {
+        val service = this.service
+        if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
+            service.operationTracer.resetContext()
+        }
+    }
+
+    override fun testFailed(context: ExtensionContext?, cause: Throwable?) {
+        val service = this.service
+        if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
+            val tracerContext = service.operationTracer.lastContext()
+
+            if (tracerContext.source.isNotBlank())
+                println(tracerContext.source)
+
+            service.operationTracer.resetContext()
+        }
+    }
+
+    override fun testDisabled(context: ExtensionContext?, reason: Optional<String>?) {
+        val service = this.service
+        if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
+            service.operationTracer.resetContext()
+        }
+    }
+
+    override fun testAborted(context: ExtensionContext?, cause: Throwable?) {
+        val service = this.service
+        if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
+            service.operationTracer.resetContext()
+        }
     }
 }
