@@ -132,8 +132,14 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
         if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
             val tracerContext = service.operationTracer.lastContext()
 
-            if (tracerContext.source.isNotBlank())
+            if (tracerContext.source.isNotBlank()) {
+                if (tracerContext.filePath != null && tracerContext.firstSelectedLine != null && tracerContext.firstSelectedOffset != null) {
+                    println("In file ${tracerContext.filePath}: (${tracerContext.firstSelectedLine}, ${tracerContext.firstSelectedOffset})")
+                } else {
+                    println("In unknown file")
+                }
                 println(tracerContext.source)
+            }
 
             service.operationTracer.resetContext()
         }
