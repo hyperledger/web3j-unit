@@ -1,4 +1,9 @@
 {
   "gasLimit": "0x1fffffffffffff",
-  "difficulty": "0x1"
+  "difficulty": "0x1",
+  "alloc": {
+    "9811ebc35d7b06b3fa8dc5809a1f9c52751e1deb": {
+      "balance": "2000"
+    }
+  }
 }
