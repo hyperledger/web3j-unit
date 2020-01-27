@@ -71,7 +71,7 @@ class ServiceBuilder {
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
             NodeType.EMBEDDED -> {
                 if (genesisPath == "dev")
-                    EmbeddedService(Configuration(Address(selfAddress), 10, null), PassthroughTracer())
+                    EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
                 else
                     EmbeddedService(Configuration(Address(selfAddress), 10, URL(genesisPath)), PassthroughTracer())
             }
