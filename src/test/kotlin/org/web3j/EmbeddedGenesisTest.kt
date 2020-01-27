@@ -36,9 +36,7 @@ class EmbeddedGenesisTest {
 
     @Test
     fun genesisLoads(
-        web3j: Web3j,
-        transactionManager: TransactionManager,
-        gasProvider: ContractGasProvider
+        web3j: Web3j
     ) {
         val expectedAccountBalance = BigInteger.valueOf(2000)
         val actualAccountBalance = web3j.ethGetBalance("9811ebc35d7b06b3fa8dc5809a1f9c52751e1deb", DefaultBlockParameter.valueOf(BigInteger.ONE)).send()
