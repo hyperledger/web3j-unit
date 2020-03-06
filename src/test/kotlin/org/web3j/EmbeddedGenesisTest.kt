@@ -13,6 +13,7 @@
 package org.web3j
 
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
@@ -23,6 +24,7 @@ import java.math.BigInteger
 
 @EVMTest(type = NodeType.EMBEDDED, genesis = "file:src/test/resources/embedded/genesis.json")
 class EmbeddedGenesisTest {
+    @Disabled("Temporarily disabled: https://github.com/web3j/web3j-unit/issues/26")
     @Test
     fun greeterDeploys(
         web3j: Web3j,
