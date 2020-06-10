@@ -12,10 +12,6 @@
  */
 package org.web3j
 
-import java.nio.file.Path
-import java.util.Optional
-import org.junit.jupiter.api.io.TempDir
-import org.junit.platform.commons.util.AnnotationUtils
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ConditionEvaluationResult
@@ -25,8 +21,10 @@ import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.junit.jupiter.api.extension.TestWatcher
-import org.web3j.container.ServiceBuilder
+import org.junit.jupiter.api.io.TempDir
+import org.junit.platform.commons.util.AnnotationUtils
 import org.web3j.container.GenericService
+import org.web3j.container.ServiceBuilder
 import org.web3j.container.embedded.EmbeddedService
 import org.web3j.crypto.Credentials
 import org.web3j.evm.PassthroughTracer
@@ -37,6 +35,8 @@ import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
 import org.web3j.tx.response.PollingTransactionReceiptProcessor
 import org.web3j.utils.Async
+import java.nio.file.Path
+import java.util.Optional
 
 open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallback, ParameterResolver, TestWatcher {
 
@@ -68,6 +68,7 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
             .version(evmTest.version)
             .withGenesis(evmTest.genesis)
             .withSelfAddress(credentials.address)
+            .withServicePort(evmTest.servicePort)
             .build()
 
         web3j = Web3j.build(service.startService(), 500, Async.defaultExecutorService())
@@ -90,19 +91,22 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
         parameterContext: ParameterContext,
         extensionContext: ExtensionContext
     ): Boolean {
-        return parameterContext.parameter.type == Web3j::class.java ||
-                parameterContext.parameter.type == TransactionManager::class.java ||
-                parameterContext.parameter.type == ContractGasProvider::class.java
+        return with(parameterContext.parameter.type) {
+            this == Web3j::class.java ||
+                    this == TransactionManager::class.java ||
+                    this == ContractGasProvider::class.java ||
+                    this == GenericService::class.java
+        } 
     }
 
     override fun resolveParameter(
         parameterContext: ParameterContext,
         extensionContext: ExtensionContext
     ): Any {
-        return when {
-            parameterContext.parameter.type == Web3j::class.java -> web3j
-            parameterContext.parameter.type == TransactionManager::class.java -> transactionManager
-            parameterContext.parameter.type == ContractGasProvider::class.java -> gasProvider
+        return when (parameterContext.parameter.type) {
+            Web3j::class.java -> web3j
+            TransactionManager::class.java -> transactionManager
+            ContractGasProvider::class.java -> gasProvider
             else -> Any()
         }
     }

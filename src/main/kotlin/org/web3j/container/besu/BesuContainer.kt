@@ -20,7 +20,8 @@ class BesuContainer(
     version: String?,
     resourceFiles: HashMap<String, String>,
     hostFiles: HashMap<String, String>,
-    genesisPath: String
+    genesisPath: String,
+    rpcPort: Int
 ) :
     KGenericContainer(
         "hyperledger/besu",
@@ -28,7 +29,9 @@ class BesuContainer(
         resourceFiles,
         hostFiles,
         "besu/besu_start.sh",
-        if (genesisPath == "dev") "besu/$genesisPath" else genesisPath) {
+        if (genesisPath == "dev") "besu/$genesisPath" else genesisPath,
+        rpcPort
+    ) {
 
     override fun withWaitStrategy(): WaitStrategy =
         Wait

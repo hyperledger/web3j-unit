@@ -34,7 +34,7 @@ class ServiceBuilder {
 
     // Default values set to use the docker-compose file
     private var serviceName = "ethrpc1"
-    private var containerPort = 8545
+    private var servicePort: Int = 8545
 
     fun type(type: NodeType) = apply {
         this.type = type
@@ -60,14 +60,14 @@ class ServiceBuilder {
         this.serviceName = serviceName
     }
 
-    fun withServicePort(containerPort: Int) = apply {
-        this.containerPort = containerPort
+    fun withServicePort(servicePort: Int) = apply {
+        this.servicePort = servicePort
     }
 
     fun build(): GenericService {
         return when (type) {
-            NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath)
-            NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath)
+            NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
+            NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.PARITY -> throw RuntimeException("Container Type Not Supported: $type")
             NodeType.EMBEDDED -> {
                 if (genesisPath == "dev")
@@ -75,7 +75,7 @@ class ServiceBuilder {
                 else
                     EmbeddedService(Configuration(Address(selfAddress), 10, URL(genesisPath)), PassthroughTracer())
             }
-            NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, containerPort)
+            NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, servicePort)
         }
     }
 }

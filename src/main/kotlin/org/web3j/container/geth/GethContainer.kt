@@ -18,7 +18,8 @@ class GethContainer(
     version: String?,
     resourceFiles: HashMap<String, String>,
     hostFiles: HashMap<String, String>,
-    genesisPath: String
+    genesisPath: String,
+    rpcPort: Int
 ) :
     KGenericContainer(
         "ethereum/client-go",
@@ -26,7 +27,8 @@ class GethContainer(
         addKey(resourceFiles),
         hostFiles,
         "geth/geth_start.sh",
-        if (genesisPath == "dev") "geth/$genesisPath" else genesisPath)
+        if (genesisPath == "dev") "geth/$genesisPath" else genesisPath, 
+        rpcPort)
 
 fun addKey(resourceFiles: java.util.HashMap<String, String>): java.util.HashMap<String, String> {
     return resourceFiles.let {
