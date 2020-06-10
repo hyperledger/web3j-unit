@@ -24,6 +24,7 @@ open class KDockerComposeContainer(
 ) :
     DockerComposeContainer<KDockerComposeContainer>(File(dockerComposePath)), GenericService {
     override fun startService(): Web3jService {
+        withLogConsumer(serviceName) { print(it.utf8String) }
         withExposedService(serviceName, containerPort)
         start()
         val mappedPort = getServicePort(serviceName, containerPort)

@@ -34,7 +34,7 @@ open class KGenericContainer(
 
     override fun startService(): Web3jService {
         resolveGenesis()
-        withLogConsumer { println(it.utf8String) }
+        withLogConsumer { print(it.utf8String) }
         addFixedExposedPort(8545, rpcPort)
         withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript, 755), "/start.sh")
         resourceFiles.forEach { (source, target) ->
