@@ -96,7 +96,7 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
                     this == TransactionManager::class.java ||
                     this == ContractGasProvider::class.java ||
                     this == GenericService::class.java
-        } 
+        }
     }
 
     override fun resolveParameter(

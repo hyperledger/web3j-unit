@@ -44,7 +44,7 @@ apply {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.web3j:core:$web3jVersion",
             "org.web3j:web3j-evm:$web3jVersion-SNAPSHOT",
