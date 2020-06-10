@@ -13,7 +13,7 @@ plugins {
 description 'Web3j-unit extension'
 
 ext {
-    web3jVersion = version
+    web3jVersion = '4.6.0'
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.2.3'
     mockitoKotlinVersion = '1.6.0'
@@ -43,9 +43,11 @@ apply {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.web3j:core:$web3jVersion",
-            "org.web3j:web3j-evm:$web3jVersion",
+            "org.web3j:web3j-evm:$web3jVersion-SNAPSHOT",
             "org.testcontainers:testcontainers:$testContainersVersion",
             "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
@@ -65,3 +67,5 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+
+sourceCompatibility = 1.8
