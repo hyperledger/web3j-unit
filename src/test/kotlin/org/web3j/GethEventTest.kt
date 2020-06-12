@@ -40,13 +40,10 @@ class GethEventTest {
         val countDownLatch = CountDownLatch(2)
         Thread {
             contract.approvalEventFlowable(EthFilter()).blockingFirst()
-            contract.transferEventFlowable(EthFilter()).blockingFirst()
-            countDownLatch.countDown()
             countDownLatch.countDown()
         }.start()
 
         contract.approve("fe3b557e8fb62b89f4916b721be55ceb828dbd73", BigInteger.TEN).send()
-        contract.transfer("fe3b557e8fb62b89f4916b721be55ceb828dbd73", BigInteger.TEN).send()
         Assertions.assertTrue(countDownLatch.await(60, TimeUnit.SECONDS))
     }
 }
