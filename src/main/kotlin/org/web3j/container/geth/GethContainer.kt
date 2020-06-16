@@ -28,7 +28,8 @@ class GethContainer(
         hostFiles,
         "geth/geth_start.sh",
         if (genesisPath == "dev") "geth/$genesisPath" else genesisPath,
-        rpcPort)
+        rpcPort
+    )
 
 fun addKey(resourceFiles: java.util.HashMap<String, String>): java.util.HashMap<String, String> {
     return resourceFiles.let {

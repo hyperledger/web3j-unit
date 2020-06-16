@@ -28,4 +28,5 @@ class ParityContainer(
         hostFiles,
         "parity/parity_start.sh",
         if (genesisPath == "dev") "parity/$genesisPath" else genesisPath,
-        rpcPort)
+        rpcPort
+    )
