@@ -14,6 +14,7 @@ description 'Web3j-unit extension'
 
 ext {
     web3jVersion = '4.6.0'
+    web3jEvmVersion = '4.5.18'
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.2.3'
     mockitoKotlinVersion = '1.6.0'
@@ -47,7 +48,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.web3j:core:$web3jVersion",
-            "org.web3j:web3j-evm:$web3jVersion-SNAPSHOT",
+            "org.web3j:web3j-evm:$web3jEvmVersion",
             "org.testcontainers:testcontainers:$testContainersVersion",
             "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
