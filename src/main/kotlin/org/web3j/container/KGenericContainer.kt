@@ -26,17 +26,16 @@ open class KGenericContainer(
     private val resourceFiles: HashMap<String, String>,
     private val hostFiles: HashMap<String, String>,
     private val startUpScript: String,
-    private val genesis: String
+    private val genesis: String,
+    private val rpcPort: Int
 ) :
     GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")),
     GenericService {
 
-    var rpcPort: Int = 0
-
     override fun startService(): Web3jService {
         resolveGenesis()
-        withLogConsumer { println(it.utf8String) }
-        withExposedPorts(8545)
+        withLogConsumer { print(it.utf8String) }
+        addFixedExposedPort(8545, rpcPort)
         withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript, 755), "/start.sh")
         resourceFiles.forEach { (source, target) ->
             withCopyFileToContainer(MountableFile.forClasspathResource(source), target)
@@ -47,9 +46,8 @@ open class KGenericContainer(
         withCreateContainerCmdModifier { c -> c.withEntrypoint("/start.sh") }
         waitingFor(withWaitStrategy())
         start()
-        rpcPort = getMappedPort(8545)
 
-        return HttpService("http://localhost:$rpcPort")
+        return HttpService("http://localhost:${getMappedPort(8545)}")
     }
 
     open fun resolveGenesis() {

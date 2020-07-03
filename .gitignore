@@ -77,3 +77,5 @@ web3j.asc
 .settings
 .classpath
 bin
+
+!/libs/*

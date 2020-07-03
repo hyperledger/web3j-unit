@@ -35,7 +35,7 @@ import org.junit.jupiter.api.extension.ExtendWith
  * }
  * </pre>
  *
- * @see Container
+ * @see org.testcontainers.containers.Container
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 @Retention(AnnotationRetention.RUNTIME)
@@ -43,5 +43,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 annotation class EVMTest(
     val type: NodeType = NodeType.EMBEDDED,
     val version: String = "latest",
-    val genesis: String = "dev"
+    val genesis: String = "dev",
+    val servicePort: Int = 8545
 )

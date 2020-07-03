@@ -18,7 +18,8 @@ class ParityContainer(
     version: String?,
     resourceFiles: HashMap<String, String>,
     hostFiles: HashMap<String, String>,
-    genesisPath: String
+    genesisPath: String,
+    rpcPort: Int
 ) :
     KGenericContainer(
         "parity/parity",
@@ -26,4 +27,6 @@ class ParityContainer(
         resourceFiles,
         hostFiles,
         "parity/parity_start.sh",
-        if (genesisPath == "dev") "parity/$genesisPath" else genesisPath)
+        if (genesisPath == "dev") "parity/$genesisPath" else genesisPath,
+        rpcPort
+    )
