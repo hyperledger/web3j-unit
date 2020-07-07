@@ -13,6 +13,7 @@
 package org.web3j
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
@@ -22,6 +23,7 @@ import org.web3j.tx.gas.ContractGasProvider
 @EVMTest(NodeType.GETH)
 class GethGreeterTest {
 
+    @Disabled
     @Test
     fun greeterDeploys(
         web3j: Web3j,
