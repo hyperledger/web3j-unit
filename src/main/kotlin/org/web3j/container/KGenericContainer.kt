@@ -36,7 +36,7 @@ open class KGenericContainer(
         resolveGenesis()
         withLogConsumer { print(it.utf8String) }
         addFixedExposedPort(8545, rpcPort)
-        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript, 755), "/start.sh")
+        withCopyFileToContainer(MountableFile.forClasspathResource(startUpScript, 775), "/start.sh")
         resourceFiles.forEach { (source, target) ->
             withCopyFileToContainer(MountableFile.forClasspathResource(source), target)
         }

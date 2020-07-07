@@ -23,7 +23,6 @@ import org.web3j.tx.gas.ContractGasProvider
 @EVMTest(NodeType.BESU)
 class BesuGreeterTest {
 
-    @Disabled
     @Test
     fun greeterDeploys(
         web3j: Web3j,

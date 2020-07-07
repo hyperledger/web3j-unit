@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
@@ -30,6 +31,10 @@ class GethGreeterTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
+        val balance =
+            web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
+                .balance
+        println(balance)
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)
