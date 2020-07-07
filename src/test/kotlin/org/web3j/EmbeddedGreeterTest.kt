@@ -21,6 +21,7 @@ import org.web3j.tx.gas.ContractGasProvider
 
 @EVMTest(NodeType.EMBEDDED)
 class EmbeddedGreeterTest {
+
     @Test
     fun greeterDeploys(
         web3j: Web3j,
