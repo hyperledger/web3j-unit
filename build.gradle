@@ -13,8 +13,8 @@ plugins {
 description 'Web3j-unit extension'
 
 ext {
-    web3jVersion = '4.6.1'
-    web3jEvmVersion = '4.5.18'
+    web3jVersion = '4.6.3'
+    web3jEvmVersion = '4.6.3'
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.2.3'
     mockitoKotlinVersion = '1.6.0'
