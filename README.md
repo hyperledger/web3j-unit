@@ -20,8 +20,8 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
       jcenter()
    }
 
-   implementation "org.web3j:core:4.6.3"
-   testCompile "org.web3j:web3j-unit:4.6.3"
+   implementation "org.web3j:core:4.6.4"
+   testCompile "org.web3j:web3j-unit:4.6.4"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`

@@ -2,19 +2,18 @@ plugins {
     id 'java'
     id 'idea'
     id 'jacoco'
-    id "com.jfrog.bintray" version "1.8.4"
-    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id "com.jfrog.bintray" version '1.8.4'
+    id "com.diffplug.gradle.spotless" version '3.25.0'
     id 'io.codearte.nexus-staging' version '0.21.1'
-    id "de.marcphilipp.nexus-publish" version "0.4.0"
+    id "de.marcphilipp.nexus-publish" version '0.4.0'
     id 'org.jetbrains.kotlin.jvm' version '1.3.50'
     id "de.undercouch.download" version "4.0.0"
 }
 
-description 'Web3j-unit extension'
+description 'Web3j JUnit extension'
 
 ext {
-    web3jVersion = '4.6.3'
-    web3jEvmVersion = '4.6.3'
+    web3jVersion = version
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.2.3'
     mockitoKotlinVersion = '1.6.0'
@@ -48,7 +47,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.web3j:core:$web3jVersion",
-            "org.web3j:web3j-evm:$web3jEvmVersion",
+            "org.web3j:web3j-evm:$web3jVersion",
             "org.testcontainers:testcontainers:$testContainersVersion",
             "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
