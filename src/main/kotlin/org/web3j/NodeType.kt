@@ -16,6 +16,7 @@ enum class NodeType {
     BESU,
     GETH,
     PARITY,
+    TEKU,
     EMBEDDED,
     COMPOSE
 }
