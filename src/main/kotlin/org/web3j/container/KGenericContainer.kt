@@ -47,7 +47,7 @@ open class KGenericContainer(
         waitingFor(withWaitStrategy())
         start()
 
-        return HttpService("http://localhost:${getMappedPort(8545)}")
+        return HttpService("http://${testHostIpAddress}:${getMappedPort(8545)}")
     }
 
     open fun resolveGenesis() {
