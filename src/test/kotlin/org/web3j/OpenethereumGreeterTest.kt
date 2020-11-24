@@ -20,9 +20,11 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
+import org.web3j.tx.gas.DefaultGasProvider
+import java.math.BigInteger
 
-@EVMTest(NodeType.GETH)
-class GethGreeterTest {
+@EVMTest(NodeType.PARITY)
+class OpenethereumGreeterTest {
 
     @Test
     fun greeterDeploys(
@@ -34,6 +36,7 @@ class GethGreeterTest {
             web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
                 .balance
         println(balance)
+
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)

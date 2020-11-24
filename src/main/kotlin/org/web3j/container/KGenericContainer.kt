@@ -13,7 +13,7 @@
 package org.web3j.container
 
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.containers.wait.strategy.Wait.forHttp
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.utility.MountableFile
 import org.web3j.protocol.Web3jService
@@ -64,5 +64,5 @@ open class KGenericContainer(
     private fun inClassPath(path: String) = this.javaClass.classLoader.getResource(path) != null
 
     protected open fun withWaitStrategy(): WaitStrategy =
-        Wait.forHttp("/").forStatusCode(200).forPort(8545)
+        forHttp("/").forStatusCode(200).forPort(8545)
 }

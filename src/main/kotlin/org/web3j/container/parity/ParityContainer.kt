@@ -12,7 +12,9 @@
  */
 package org.web3j.container.parity
 
+import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.web3j.container.KGenericContainer
+import org.web3j.strategy.CustomWaitingStrategy
 
 class ParityContainer(
     version: String?,
@@ -22,11 +24,26 @@ class ParityContainer(
     rpcPort: Int
 ) :
     KGenericContainer(
-        "parity/parity",
+        "openethereum/openethereum",
         version,
         resourceFiles,
-        hostFiles,
-        "parity/parity_start.sh",
-        if (genesisPath == "dev") "parity/$genesisPath" else genesisPath,
+        addHostFiles(hostFiles),
+        "openethereum/openethereum_start.sh",
+        if (genesisPath == "dev") "openethereum/$genesisPath" else genesisPath,
         rpcPort
-    )
+    ) {
+    override fun withWaitStrategy(): WaitStrategy {
+        return CustomWaitingStrategy().forPort(8545).forPath("/").forStatusCode(200)
+    }
+}
+
+fun addHostFiles(resourceFiles: java.util.HashMap<String, String>): java.util.HashMap<String, String> {
+    return resourceFiles.let {
+        it["openethereum/key.txt"] = "/etc/key.txt"
+        it["openethereum/password.txt"] = "etc/password.txt"
+        it["openethereum/config.toml"] = "/config.toml"
+        it["openethereum/dev.json"] = "/etc/dev.json"
+        it
+    }
+}
+
