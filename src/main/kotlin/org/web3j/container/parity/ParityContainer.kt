@@ -46,4 +46,3 @@ fun addHostFiles(resourceFiles: java.util.HashMap<String, String>): java.util.Ha
         it
     }
 }
-

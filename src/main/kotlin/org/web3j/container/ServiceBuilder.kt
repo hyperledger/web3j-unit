@@ -12,7 +12,6 @@
  */
 package org.web3j.container
 
-import org.testcontainers.containers.BindMode
 import org.web3j.NodeType
 import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer

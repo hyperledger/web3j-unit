@@ -16,7 +16,6 @@ import org.rnorth.ducttape.TimeoutException
 import org.rnorth.ducttape.unreliables.Unreliables
 import org.testcontainers.containers.ContainerLaunchException
 import org.testcontainers.containers.wait.strategy.AbstractWaitStrategy
-import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
 import org.testcontainers.shaded.com.google.common.base.Strings
 import org.testcontainers.shaded.com.google.common.io.BaseEncoding
 import java.io.BufferedReader
@@ -26,13 +25,12 @@ import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
 import java.time.Duration
-import java.util.*
+import java.util.Optional
 import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 import kotlin.collections.HashSet
 
 class CustomWaitingStrategy : AbstractWaitStrategy() {
-
 
     /**
      * Authorization HTTP header.
@@ -151,7 +149,7 @@ class CustomWaitingStrategy : AbstractWaitStrategy() {
         }.orElseGet {
             val livenessCheckPorts = livenessCheckPorts
             if (livenessCheckPorts == null || livenessCheckPorts.isEmpty()) {
-                //log.warn("{}: No exposed ports or mapped ports - cannot wait for status", containerName)
+                // log.warn("{}: No exposed ports or mapped ports - cannot wait for status", containerName)
                 return@orElseGet -1
             }
             livenessCheckPorts.iterator().next()
@@ -160,7 +158,7 @@ class CustomWaitingStrategy : AbstractWaitStrategy() {
             return
         }
         val uri = buildLivenessUri(livenessCheckPort).toString()
-        //log.info("{}: Waiting for {} seconds for URL: {}", containerName, startupTimeout.seconds, uri)
+        // log.info("{}: Waiting for {} seconds for URL: {}", containerName, startupTimeout.seconds, uri)
 
         // try to connect to the URL
         try {
@@ -215,7 +213,7 @@ class CustomWaitingStrategy : AbstractWaitStrategy() {
                         }
                         if (responsePredicate != null) {
                             val responseBody = getResponseBody(connection)
-                            //log.trace("Get response {}", responseBody)
+                            // log.trace("Get response {}", responseBody)
                             if (!responsePredicate!!.test(responseBody)) {
                                 throw RuntimeException(
                                     String.format(
@@ -284,6 +282,4 @@ class CustomWaitingStrategy : AbstractWaitStrategy() {
         }
         return builder.toString()
     }
-
-
 }
