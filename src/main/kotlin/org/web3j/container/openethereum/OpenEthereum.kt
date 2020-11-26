@@ -10,11 +10,11 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.web3j.container.parity
+package org.web3j.container.openethereum
 
+import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.web3j.container.KGenericContainer
-import org.web3j.strategy.CustomWaitingStrategy
 
 class ParityContainer(
     version: String?,
@@ -33,16 +33,17 @@ class ParityContainer(
         rpcPort
     ) {
     override fun withWaitStrategy(): WaitStrategy {
-        return CustomWaitingStrategy().forPort(8545).forPath("/").forStatusCode(200)
+        return Wait.forHttp("/").forStatusCode(200)
+            .forStatusCode(301).forStatusCode(405)
     }
 }
 
 fun addHostFiles(resourceFiles: java.util.HashMap<String, String>): java.util.HashMap<String, String> {
     return resourceFiles.let {
-        it["openethereum/key.txt"] = "/etc/key.txt"
-        it["openethereum/password.txt"] = "etc/password.txt"
+        it["openethereum/key.txt"] = "/key.txt"
+        it["openethereum/password.txt"] = "/password.txt"
         it["openethereum/config.toml"] = "/config.toml"
-        it["openethereum/dev.json"] = "/etc/dev.json"
+        it["openethereum/dev.json"] = "/dev.json"
         it
     }
 }

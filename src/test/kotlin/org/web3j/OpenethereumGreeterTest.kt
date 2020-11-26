@@ -20,7 +20,7 @@ import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 
-@EVMTest(NodeType.PARITY)
+@EVMTest(NodeType.OPEN_ETHEREUM)
 class OpenethereumGreeterTest {
 
     @Test

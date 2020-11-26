@@ -3,11 +3,9 @@
 
 [parity]
 # Local Development Chain
-chain = "/etc/dev.json"
+chain = "/dev.json"
 # Stable
 release_track = "stable"
-
-
 [account]
 # From: [0xfe3b557e8fb62b89f4916b721be55ceb828dbd73] you'll be able to send transactions without password.
 unlock = ["0xfe3b557e8fb62b89f4916b721be55ceb828dbd73"]
@@ -32,8 +30,9 @@ discovery = false
 # Allows Cross-Origin Requests from domain ''.
 cors = [""]
 # Only selected APIs will be exposed over this interface.
-apis = ["web3", "eth", "pubsub", "net", "parity", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub", "parity_transactions_pool", "personal", "parity_accounts"]
+apis = ["rpc", "web3", "eth", "pubsub", "net", "parity", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub", "parity_transactions_pool", "personal", "parity_accounts"]
 
 [websockets]
 # UI won't work and WebSockets server will be not available.
 disable = true
+
