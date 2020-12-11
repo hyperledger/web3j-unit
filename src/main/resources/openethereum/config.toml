@@ -1,0 +1,49 @@
+# This config should be placed in following path:
+#   ~/.local/share/io.parity.ethereum/config.toml
+
+[parity]
+chain = "/home/openethereum/.local/share/openethereum/dev.json"
+mode = "offline"
+
+# Stable
+
+[account]
+
+
+
+[network]
+# Parity will sync by downloading latest state first. Node will be operational in couple minutes.
+warp = false
+# Parity will try to maintain connection to at least  peers.
+min_peers = 0
+# Parity will maintain at most  peers.
+max_peers = 0
+# Parity will allow up to  pending connections.
+max_pending_peers = 0
+# Enable or disable new peers discovery.
+discovery = true
+allow_ips = "all"
+
+
+[rpc]
+# Allows Cross-Origin Requests from domain ''.
+cors = []
+# Only selected APIs will be exposed over this interface.
+apis = ["web3", "eth", "pubsub", "net", "parity", "parity_pubsub", "traces"]
+disable = false
+port = 8545
+interface = "all"
+hosts = ["all"]
+
+[websockets]
+# UI won't work and WebSockets server will be not available.
+disable = true
+
+[mining]
+reseal_min_period = 0
+min_gas_price = 0
+
+
+[misc]
+# Logging pattern (`<module>=<level>`, e.g. `own_tx=trace`).
+logging = "miner=trace,own_tx=trace"

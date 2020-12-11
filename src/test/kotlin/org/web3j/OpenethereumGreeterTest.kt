@@ -21,8 +21,8 @@ import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 @Disabled
-@EVMTest(NodeType.GETH)
-class GethGreeterTest {
+@EVMTest(NodeType.OPEN_ETHEREUM)
+class OpenethereumGreeterTest {
 
     @Test
     fun greeterDeploys(
@@ -30,11 +30,17 @@ class GethGreeterTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
-        val balance =
-            web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
-                .balance
-        println(balance)
+
+        val bal =
+            web3j.ethGetBalance("0x627306090abaB3A6e1400e9345bC60c78a8BEf57", DefaultBlockParameterName.LATEST).send()
+        println(bal)
+
+        val block = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+        println("${block.block.number} SECOND BLOCK")
+
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
+        val block2 = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+        println(block2.block.number)
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)
     }

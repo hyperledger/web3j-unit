@@ -15,7 +15,7 @@ package org.web3j
 enum class NodeType {
     BESU,
     GETH,
-    PARITY,
+    OPEN_ETHEREUM,
     EMBEDDED,
     COMPOSE
 }
