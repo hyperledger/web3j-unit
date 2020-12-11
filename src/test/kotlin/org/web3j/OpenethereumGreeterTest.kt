@@ -13,13 +13,14 @@
 package org.web3j
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
-
+@Disabled
 @EVMTest(NodeType.OPEN_ETHEREUM)
 class OpenethereumGreeterTest {
 
@@ -29,12 +30,17 @@ class OpenethereumGreeterTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
-        val balance =
-            web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
-                .balance
-        println(balance)
+
+        val bal =
+            web3j.ethGetBalance("0x627306090abaB3A6e1400e9345bC60c78a8BEf57", DefaultBlockParameterName.LATEST).send()
+        println(bal)
+
+        val block = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+        println("${block.block.number} SECOND BLOCK")
 
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
+        val block2 = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+        println(block2.block.number)
         val greeting = greeter.greet().send()
         assertEquals("Hello EVM", greeting)
     }

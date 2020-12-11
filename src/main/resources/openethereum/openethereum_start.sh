@@ -1,2 +1,2 @@
 #!/bin/sh
-./openethereum --config /config.toml --logging warn --chain /dev.json --mode offline --unsafe-expose
+./openethereum --config /home/openethereum/.local/share/openethereum/config.toml --logging debug --unsafe-expose

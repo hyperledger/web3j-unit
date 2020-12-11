@@ -1,0 +1,37 @@
+# This config should be placed in following path:
+#   ~/.local/share/io.parity.ethereum/config.toml
+
+[parity]
+# Local Development Chain
+# Stable
+release_track = "stable"
+[account]
+# From: [0xfe3b557e8fb62b89f4916b721be55ceb828dbd73] you'll be able to send transactions without password.
+unlock = ["0xfe3b557e8fb62b89f4916b721be55ceb828dbd73"]
+# File at /etc/password.txt should contain passwords to unlock your accounts. One password per line.
+password = ["/password.txt"]
+# Specify the cache time of accounts read from disk. If you manage thousands of accounts set this to 0 to disable refresh.
+refresh_time = 0
+
+[network]
+# Parity will sync by downloading latest state first. Node will be operational in couple minutes.
+warp = false
+# Parity will try to maintain connection to at least  peers.
+min_peers = 0
+# Parity will maintain at most  peers.
+max_peers = 0
+# Parity will allow up to  pending connections.
+max_pending_peers = 0
+# Enable or disable new peers discovery.
+discovery = false
+
+[rpc]
+# Allows Cross-Origin Requests from domain ''.
+cors = [""]
+# Only selected APIs will be exposed over this interface.
+apis = ["rpc", "web3", "eth", "pubsub", "net", "parity", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub", "parity_transactions_pool", "personal", "parity_accounts"]
+
+[websockets]
+# UI won't work and WebSockets server will be not available.
+disable = true
+

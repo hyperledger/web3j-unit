@@ -12,6 +12,7 @@
  */
 package org.web3j.container
 
+import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait.forHttp
 import org.testcontainers.containers.wait.strategy.WaitStrategy
@@ -41,7 +42,7 @@ open class KGenericContainer(
             withCopyFileToContainer(MountableFile.forClasspathResource(source), target)
         }
         hostFiles.forEach { (source, target) ->
-            withCopyFileToContainer(MountableFile.forHostPath(source), target)
+            withClasspathResourceMapping(source, target, BindMode.READ_ONLY)
         }
         withCreateContainerCmdModifier { c -> c.withEntrypoint("/start.sh") }
         waitingFor(withWaitStrategy())

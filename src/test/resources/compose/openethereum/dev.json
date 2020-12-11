@@ -1,8 +1,19 @@
 {
   "name": "unit",
   "engine": {
-    "instantSeal": {
-      "params": {}
+    "ethash": {
+      "params": {
+        "minimumDifficulty": "0x020000",
+        "difficultyBoundDivisor": "0x0800",
+        "durationLimit": "0x0d",
+        "blockReward": "0x4563918244F40000",
+        "homesteadTransition": 0,
+        "eip150Transition": 0,
+        "eip160Transition": 10,
+        "eip161abcTransition": 10,
+        "eip161dTransition": 10,
+        "maxCodeSize": 24576
+      }
     }
   },
   "genesis": {
@@ -10,17 +21,12 @@
       "generic": "0x0"
     },
     "difficulty": "0x20000",
-    "author": "0x0000000000000000000000000000000000000000",
-    "timestamp": "0x00",
-    "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "extraData": "0x",
-    "gasLimit": "0x1fffffffffffff"
+    "gasLimit": "0x2fefd8"
   },
   "params": {
     "networkID": "0x2",
     "maximumExtraDataSize": "0x20",
-    "minGasLimit": "0x1fffffffffffff",
-    "gasLimitBoundDivisor": "0x01"
+    "minGasLimit": "0x1388"
   },
   "accounts": {
     "fe3b557e8fb62b89f4916b721be55ceb828dbd73": {
