@@ -59,13 +59,7 @@ publishing {
                         name = 'Conor Svensson'
                         email = 'conor10@gmail.com'
                     }
-                    developer {
-                        id = 'antonydenyer'
-                        name = 'Antony Denyer'
-                        email = 'antony@web3labs.com'
-                    }
                 }
-
             }
         }
     }
