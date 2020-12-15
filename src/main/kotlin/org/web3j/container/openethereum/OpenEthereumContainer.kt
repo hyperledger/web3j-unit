@@ -12,7 +12,7 @@
  */
 package org.web3j.container.openethereum
 
-import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
+import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.web3j.container.KGenericContainer
 
@@ -33,7 +33,7 @@ class OpenEthereumContainer(
         rpcPort
     ) {
     override fun withWaitStrategy(): WaitStrategy {
-        return HttpWaitStrategy().forPort(8545).forStatusCode(405)
+        return Wait.forHttp("/").withMethod("OPTIONS").forStatusCode(200).forPort(8545)
     }
 }
 
