@@ -12,12 +12,16 @@ plugins {
 
 description 'Web3j-unit extension'
 
+
 ext {
     web3jVersion = version
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.2.3'
     mockitoKotlinVersion = '1.6.0'
     testContainersVersion = '1.15.1'
+    besuPluginVersion = '21.7.2'
+    besuInternalVersion = '21.7.2'
+    besuCryptoDepVersion = '0.3.0'
 }
 
 apply {
@@ -42,18 +46,41 @@ apply {
     }
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+repositories {
+    maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" }
+    maven { url "https://artifacts.consensys.net/public/maven/maven/" }
+    maven { url "https://splunk.jfrog.io/splunk/ext-releases-local" }
+    maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
+}
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
-            "org.web3j:core:$web3jVersion",
-            "org.web3j:web3j-evm:$web3jVersion",
-            "org.testcontainers:testcontainers:$testContainersVersion",
-            "io.github.microutils:kotlin-logging:$kotlinLoggingVersion",
-            "ch.qos.logback:logback-classic:$logbackVersion",
-            "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.web3j:core:$web3jVersion"
+    implementation "org.web3j:web3j-evm:$web3jVersion"
+    implementation "org.testcontainers:testcontainers:$testContainersVersion"
+    implementation "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    implementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    implementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    implementation "org.hyperledger.besu:plugin-api:$besuPluginVersion"
+    implementation "org.hyperledger.besu.internal:besu:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:api:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:config:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:core:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:crypto:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:rlp:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:kvstore:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:metrics-core:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:trie:$besuInternalVersion"
+    implementation "org.hyperledger.besu.internal:util:$besuInternalVersion"
+    implementation "org.hyperledger.besu:bls12-381:$besuCryptoDepVersion"
+    implementation "org.hyperledger.besu:secp256k1:$besuCryptoDepVersion"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 compileKotlin {
@@ -67,5 +94,3 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
-
-sourceCompatibility = 1.8

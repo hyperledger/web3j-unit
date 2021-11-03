@@ -26,7 +26,7 @@ class EVMComposeExtension : EVMExtension() {
 
     override fun beforeAll(context: ExtensionContext) {
         val evmComposeTest = AnnotationUtils
-            .findAnnotation(context.requiredTestClass, EVMComposeTest::class.java).orElseThrow()
+            .findAnnotation(context.requiredTestClass, EVMComposeTest::class.java).get()
 
         super.service = ServiceBuilder()
             .type(NodeType.COMPOSE)
