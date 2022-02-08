@@ -38,7 +38,7 @@ apply {
         download {
             src "https://raw.githubusercontent.com/web3j/build-tools/master/gradle/$buildScript/build.gradle"
             dest "$rootDir/gradle/$buildScript/build.gradle"
-            overwrite true
+            overwrite false
             quiet true
             onlyIfModified true
         }
@@ -57,7 +57,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.web3j:core:$web3jVersion"
+
     implementation "org.web3j:web3j-evm:$web3jVersion"
+
     implementation "org.testcontainers:testcontainers:$testContainersVersion"
     implementation "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
@@ -65,8 +67,12 @@ dependencies {
     implementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     implementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
     implementation "org.hyperledger.besu:plugin-api:$besuPluginVersion"
-    implementation "org.hyperledger.besu.internal:besu:$besuInternalVersion"
-    implementation "org.hyperledger.besu.internal:api:$besuInternalVersion"
+    implementation("org.hyperledger.besu.internal:besu:$besuInternalVersion") {
+        exclude group: 'org.web3j'
+    }
+    implementation("org.hyperledger.besu.internal:api:$besuInternalVersion") {
+        exclude group: 'org.web3j'
+    }
     implementation "org.hyperledger.besu.internal:config:$besuInternalVersion"
     implementation "org.hyperledger.besu.internal:core:$besuInternalVersion"
     implementation "org.hyperledger.besu.internal:crypto:$besuInternalVersion"
@@ -76,6 +82,7 @@ dependencies {
     implementation "org.hyperledger.besu.internal:trie:$besuInternalVersion"
     implementation "org.hyperledger.besu.internal:util:$besuInternalVersion"
     implementation "org.hyperledger.besu:bls12-381:$besuCryptoDepVersion"
+
     implementation "org.hyperledger.besu:secp256k1:$besuCryptoDepVersion"
 }
 
