@@ -18,6 +18,10 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
    repositories {
       mavenCentral()
       jcenter()
+      maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" }
+      maven { url "https://artifacts.consensys.net/public/maven/maven/" }
+      maven { url "https://splunk.jfrog.io/splunk/ext-releases-local" }
+      maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
    }
 
    implementation "org.web3j:core:4.9.4"
