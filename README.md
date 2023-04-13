@@ -1,4 +1,4 @@
-# Web3j-unit [![Build Status](https://travis-ci.org/web3j/web3j-unit.svg?branch=master)](https://travis-ci.org/web3j/web3j-unit)
+# Web3j-unit [![Build Status](https://github.com/web3j/web3j-unit/actions/workflows/build.yml/badge.svg)](https://github.com/web3j/web3j-unit/actions/workflows/build.yml)
 
 Web3j-unit is a [Junit 5](https://junit.org/junit5/docs/current/user-guide/) extension to streamline the creation of Ethereum contract tests.
 
@@ -24,8 +24,8 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
       maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
    }
 
-   implementation "org.web3j:core:4.9.4"
-   testCompile "org.web3j:web3j-unit:4.9.4"
+   implementation "org.web3j:core:4.9.7"
+   testCompile "org.web3j:web3j-unit:4.9.7"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`
