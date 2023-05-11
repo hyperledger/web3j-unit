@@ -12,7 +12,7 @@
  */
 package org.web3j.container.embedded
 
-import org.hyperledger.besu.ethereum.vm.OperationTracer
+import org.hyperledger.besu.evm.tracing.OperationTracer
 import org.web3j.container.GenericService
 import org.web3j.evm.Configuration
 import org.web3j.evm.EmbeddedWeb3jService
