@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'idea'
     id 'jacoco'
-    id "com.jfrog.bintray" version "1.8.4"
-    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'com.diffplug.gradle.spotless' version '3.25.0'
     id 'io.codearte.nexus-staging' version '0.21.1'
-    id "de.marcphilipp.nexus-publish" version "0.4.0"
+    id 'de.marcphilipp.nexus-publish' version '0.4.0'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-    id "de.undercouch.download" version "4.0.0"
+    id 'de.undercouch.download' version '4.0.0'
 }
 
 description 'Web3j-unit extension'
@@ -48,11 +48,9 @@ apply {
 }
 
 repositories {
-    mavenLocal()
     maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" }
     maven { url "https://artifacts.consensys.net/public/maven/maven/" }
     maven { url "https://splunk.jfrog.io/splunk/ext-releases-local" }
-    maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
 }
 
 dependencies {
@@ -104,3 +102,7 @@ compileTestKotlin {
         jvmTarget = "17"
     }
 }
+
+tasks.named("spotlessKotlin").configure { dependsOn("compileKotlin","sourcesJar") }
+tasks.named("compileTestKotlin").configure { dependsOn("spotlessKotlin","spotlessJava") }
+tasks.named("compileTestJava").configure { dependsOn("spotlessJava") }
