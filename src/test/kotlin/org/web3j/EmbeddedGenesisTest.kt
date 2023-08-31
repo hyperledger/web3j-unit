@@ -20,9 +20,7 @@ import org.web3j.protocol.core.DefaultBlockParameter
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
 import java.math.BigInteger
-import org.junit.jupiter.api.Disabled
 
-@Disabled
 @EVMTest(type = NodeType.EMBEDDED, genesis = "file:src/test/resources/embedded/genesis.json")
 class EmbeddedGenesisTest {
     @Test
