@@ -17,7 +17,6 @@ import org.web3j.abi.datatypes.Address
 import org.web3j.container.besu.BesuContainer
 import org.web3j.container.embedded.EmbeddedService
 import org.web3j.container.geth.GethContainer
-import org.web3j.container.openethereum.OpenEthereumContainer
 import org.web3j.evm.Configuration
 import org.web3j.evm.PassthroughTracer
 import java.net.URL
@@ -68,13 +67,6 @@ class ServiceBuilder {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
-            NodeType.OPEN_ETHEREUM -> OpenEthereumContainer(
-                version,
-                resourceFiles,
-                hostFiles,
-                genesisPath,
-                servicePort
-            )
             NodeType.EMBEDDED -> {
                 if (genesisPath == "dev")
                     EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
