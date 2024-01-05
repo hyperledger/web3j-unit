@@ -16,7 +16,7 @@ description 'Web3j-unit extension'
 ext {
     web3jVersion = version
     kotlinLoggingVersion = '1.6.24'
-    logbackVersion = '1.2.3'
+    logbackVersion = '1.4.14'
     mockitoKotlinVersion = '1.6.0'
     testContainersVersion = '1.17.1'
     besuPluginVersion = '23.4.1'
