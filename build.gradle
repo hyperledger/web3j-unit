@@ -18,7 +18,7 @@ ext {
     kotlinLoggingVersion = '1.6.24'
     logbackVersion = '1.4.14'
     mockitoKotlinVersion = '1.8.10'
-    testContainersVersion = '1.17.1'
+    testContainersVersion = '1.19.7'
     besuPluginVersion = '24.1.1'
     besuInternalVersion = '24.1.1'
     besuInternalCryptoVersion = '23.1.3'
