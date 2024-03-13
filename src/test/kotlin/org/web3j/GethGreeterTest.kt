@@ -28,7 +28,6 @@ class GethGreeterTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
-        Thread.sleep(2000)
         val balance =
             web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
                 .balance

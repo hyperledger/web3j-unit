@@ -29,7 +29,6 @@ class EmbeddedGenesisTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
-        Thread.sleep(2000)
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
         val greeting = greeter.greet().send()
         Assertions.assertEquals("Hello EVM", greeting)
