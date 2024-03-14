@@ -24,7 +24,6 @@ import org.web3j.tx.gas.ContractGasProvider
 @EVMTest(type = NodeType.GETH)
 class GethGreeterTest {
 
-    @Disabled
     @Test
     fun greeterDeploys(
         web3j: Web3j,
