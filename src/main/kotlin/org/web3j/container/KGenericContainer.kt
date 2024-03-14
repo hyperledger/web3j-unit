@@ -12,10 +12,9 @@
  */
 package org.web3j.container
 
-import java.time.Duration
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.startupcheck.OneShotStartupCheckStrategy
+import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCheckStrategy
 import org.testcontainers.containers.wait.strategy.Wait.forHttp
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.utility.MountableFile
@@ -48,7 +47,7 @@ open class KGenericContainer(
         }
         withCreateContainerCmdModifier { c -> c.withEntrypoint("/start.sh") }
         waitingFor(withWaitStrategy())
-        withStartupCheckStrategy(OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(5)))
+        withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
         start()
 
         return HttpService("http://localhost:${getMappedPort(8545)}")
