@@ -48,7 +48,7 @@ open class KGenericContainer(
         }
         withCreateContainerCmdModifier { c -> c.withEntrypoint("/start.sh") }
         waitingFor(withWaitStrategy())
-        withStartupCheckStrategy( OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(10)) )
+        withStartupCheckStrategy(OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(10)))
         start()
 
         return HttpService("http://localhost:${getMappedPort(8545)}")
