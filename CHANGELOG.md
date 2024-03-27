@@ -3,8 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-
-# [4.11.2]() (Upcoming)
+# [4.11.3]() (Upcoming)
 
 ### Bug Fixes
 
@@ -17,6 +16,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### BREAKING CHANGES
 
 *
+
+# [4.11.2](https://github.com/web3j/web3j-unit/releases/tag/v4.11.2) (2024-03-27)
+
+### Bug Fixes
+
+* NIL
+
+### Features
+
+* bump snapshot version to 4.11.2 [#75](https://github.com/web3j/web3j-unit/pull/75)
+
+### BREAKING CHANGES
+
+* NIL
 
 
 # [4.11.1](https://github.com/web3j/web3j-unit/releases/tag/v4.11.1) (2023-03-14)
