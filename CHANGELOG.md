@@ -11,11 +11,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-*
+* bump snapshot version 4.11.3 [#76](https://github.com/hyperledger/web3j-unit/pull/76)
 
 ### BREAKING CHANGES
 
-*
+* Master branch rename to main and repo migrated [#78](https://github.com/web3j/web3j-unit/pull/78)
+
 
 # [4.11.2](https://github.com/web3j/web3j-unit/releases/tag/v4.11.2) (2024-03-27)
 
