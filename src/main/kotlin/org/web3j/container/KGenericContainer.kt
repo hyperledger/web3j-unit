@@ -66,5 +66,5 @@ open class KGenericContainer(
     private fun inClassPath(path: String) = this.javaClass.classLoader.getResource(path) != null
 
     protected open fun withWaitStrategy(): WaitStrategy =
-        forHttp("/").forStatusCode(200).forPort(8545).withStartupTimeout(Duration.ofMinutes(3))
+        forHttp("/").forStatusCode(200).forPort(8545).withStartupTimeout(Duration.ofMinutes(2))
 }
