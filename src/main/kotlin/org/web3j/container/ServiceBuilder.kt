@@ -27,7 +27,7 @@ class ServiceBuilder {
     private lateinit var type: NodeType
     private lateinit var selfAddress: String
     private lateinit var dockerCompose: String
-    private var version: String? = "1.13.15"
+    private var version: String? = null
     private val resourceFiles: HashMap<String, String> = hashMapOf()
     private val hostFiles: HashMap<String, String> = hashMapOf()
 
@@ -66,7 +66,7 @@ class ServiceBuilder {
     fun build(): GenericService {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
-            NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
+            NodeType.GETH -> GethContainer("v1.13.10", resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.EMBEDDED -> {
                 if (genesisPath == "dev")
                     EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
