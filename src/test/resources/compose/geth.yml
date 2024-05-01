@@ -1,7 +1,7 @@
 version: '3'
 services:
   node1:
-    image: ethereum/client-go:stable
+    image: ethereum/client-go:v1.13.15
     ports:
       - 8545:8545
       - 30303:30303
