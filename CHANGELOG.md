@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-*
+* Fix Geth integration tests [#79](https://github.com/hyperledger/web3j-evm/pull/79)
 
 ### Features
 
