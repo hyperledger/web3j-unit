@@ -7,5 +7,13 @@ services:
       - 30303:30303
     volumes:
       - ./geth:/geth
-    entrypoint:
-      - ./geth/compose_start.sh
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        ./geth/compose_start.sh && sleep 60
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8545" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
