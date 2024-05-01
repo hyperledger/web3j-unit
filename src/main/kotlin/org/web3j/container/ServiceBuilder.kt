@@ -27,7 +27,7 @@ class ServiceBuilder {
     private lateinit var type: NodeType
     private lateinit var selfAddress: String
     private lateinit var dockerCompose: String
-    private var version: String? = null
+    private var version: String? = "1.13.15"
     private val resourceFiles: HashMap<String, String> = hashMapOf()
     private val hostFiles: HashMap<String, String> = hashMapOf()
 
