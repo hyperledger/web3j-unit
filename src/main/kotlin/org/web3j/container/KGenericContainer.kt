@@ -19,6 +19,7 @@ import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.utility.MountableFile
 import org.web3j.protocol.Web3jService
 import org.web3j.protocol.http.HttpService
+import java.time.Duration
 
 // https://github.com/testcontainers/testcontainers-java/issues/318
 open class KGenericContainer(
@@ -65,5 +66,5 @@ open class KGenericContainer(
     private fun inClassPath(path: String) = this.javaClass.classLoader.getResource(path) != null
 
     protected open fun withWaitStrategy(): WaitStrategy =
-        forHttp("/").forStatusCode(200).forPort(8545)
+        forHttp("/").forStatusCode(200).forPort(8545).withStartupTimeout(Duration.ofMinutes(2))
 }

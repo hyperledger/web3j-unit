@@ -13,14 +13,13 @@
 package org.web3j
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
-@Disabled
+
 @EVMTest(type = NodeType.GETH)
 class GethGreeterTest {
 
@@ -30,7 +29,7 @@ class GethGreeterTest {
         transactionManager: TransactionManager,
         gasProvider: ContractGasProvider
     ) {
-        Thread.sleep(2000)
+        Thread.sleep(10000)
         val balance =
             web3j.ethGetBalance("0xfe3b557e8fb62b89f4916b721be55ceb828dbd73", DefaultBlockParameterName.LATEST).send()
                 .balance

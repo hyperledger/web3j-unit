@@ -66,7 +66,7 @@ class ServiceBuilder {
     fun build(): GenericService {
         return when (type) {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
-            NodeType.GETH -> GethContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
+            NodeType.GETH -> GethContainer("v1.13.15", resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.EMBEDDED -> {
                 if (genesisPath == "dev")
                     EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())

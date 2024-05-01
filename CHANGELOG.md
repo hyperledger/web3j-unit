@@ -7,11 +7,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-*
+* Fix Geth integration tests [#79](https://github.com/hyperledger/web3j-evm/pull/79)
 
 ### Features
 
 * bump snapshot version 4.11.3 [#76](https://github.com/hyperledger/web3j-unit/pull/76)
+* Repo owner Change [#79](https://github.com/hyperledger/web3j-evm/pull/79)
 
 ### BREAKING CHANGES
 
