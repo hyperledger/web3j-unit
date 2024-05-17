@@ -27,7 +27,7 @@ class EmbeddedGenesisTest {
     fun greeterDeploys(
         web3j: Web3j,
         transactionManager: TransactionManager,
-        gasProvider: ContractGasProvider
+        gasProvider: ContractGasProvider,
     ) {
         Thread.sleep(2000)
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()
@@ -37,12 +37,12 @@ class EmbeddedGenesisTest {
 
     @Test
     fun genesisLoads(
-        web3j: Web3j
+        web3j: Web3j,
     ) {
         val expectedAccountBalance = BigInteger.valueOf(16)
         val actualAccountBalance = web3j.ethGetBalance(
             "fe3b557e8fb62b89f4916b721be55ceb828dbd74",
-            DefaultBlockParameter.valueOf(BigInteger.ONE)
+            DefaultBlockParameter.valueOf(BigInteger.ONE),
         ).send()
 
         Assertions.assertEquals(expectedAccountBalance, actualAccountBalance.balance)

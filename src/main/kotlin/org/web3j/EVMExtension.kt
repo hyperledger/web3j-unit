@@ -79,7 +79,9 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
             PollingTransactionReceiptProcessor(
                 web3j,
                 1000,
-                30))
+                30,
+            ),
+        )
     }
 
     override fun afterAll(context: ExtensionContext) {
@@ -89,19 +91,19 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
 
     override fun supportsParameter(
         parameterContext: ParameterContext,
-        extensionContext: ExtensionContext
+        extensionContext: ExtensionContext,
     ): Boolean {
         return with(parameterContext.parameter.type) {
             this == Web3j::class.java ||
-                    this == TransactionManager::class.java ||
-                    this == ContractGasProvider::class.java ||
-                    this == GenericService::class.java
+                this == TransactionManager::class.java ||
+                this == ContractGasProvider::class.java ||
+                this == GenericService::class.java
         }
     }
 
     override fun resolveParameter(
         parameterContext: ParameterContext,
-        extensionContext: ExtensionContext
+        extensionContext: ExtensionContext,
     ): Any {
         return when (parameterContext.parameter.type) {
             Web3j::class.java -> web3j

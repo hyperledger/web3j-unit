@@ -16,5 +16,5 @@ enum class NodeType {
     BESU,
     GETH,
     EMBEDDED,
-    COMPOSE
+    COMPOSE,
 }

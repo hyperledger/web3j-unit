@@ -44,7 +44,9 @@ class EVMComposeExtension : EVMExtension() {
             PollingTransactionReceiptProcessor(
                 super.web3j,
                 1000,
-                30))
+                30,
+            ),
+        )
     }
 
     override fun evaluateExecutionCondition(context: ExtensionContext): ConditionEvaluationResult {

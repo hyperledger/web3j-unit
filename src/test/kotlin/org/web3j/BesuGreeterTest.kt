@@ -25,7 +25,7 @@ class BesuGreeterTest {
     fun greeterDeploys(
         web3j: Web3j,
         transactionManager: TransactionManager,
-        gasProvider: ContractGasProvider
+        gasProvider: ContractGasProvider,
     ) {
         Thread.sleep(2000)
         val greeter = Greeter.deploy(web3j, transactionManager, gasProvider, "Hello EVM").send()

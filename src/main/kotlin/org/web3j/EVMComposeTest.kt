@@ -43,5 +43,5 @@ import org.junit.jupiter.api.extension.ExtendWith
 annotation class EVMComposeTest(
     val dockerCompose: String = "test.yml",
     val service: String = "node1",
-    val servicePort: Int = 8545
+    val servicePort: Int = 8545,
 )
