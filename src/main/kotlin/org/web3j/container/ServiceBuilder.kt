@@ -68,10 +68,11 @@ class ServiceBuilder {
             NodeType.BESU -> BesuContainer(version, resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.GETH -> GethContainer("v1.13.15", resourceFiles, hostFiles, genesisPath, servicePort)
             NodeType.EMBEDDED -> {
-                if (genesisPath == "dev")
+                if (genesisPath == "dev") {
                     EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
-                else
+                } else {
                     EmbeddedService(Configuration(Address(selfAddress), 10, URL(genesisPath)), PassthroughTracer())
+                }
             }
             NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, servicePort)
         }

@@ -29,7 +29,7 @@ open class KGenericContainer(
     private val hostFiles: HashMap<String, String>,
     private val startUpScript: String,
     private val genesis: String,
-    private val rpcPort: Int
+    private val rpcPort: Int,
 ) :
     GenericContainer<KGenericContainer>(imageName + (version?.let { ":$it" } ?: "")),
     GenericService {

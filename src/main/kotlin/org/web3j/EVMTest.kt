@@ -44,5 +44,5 @@ annotation class EVMTest(
     val type: NodeType = NodeType.EMBEDDED,
     val version: String = "latest",
     val genesis: String = "dev",
-    val servicePort: Int = 8545
+    val servicePort: Int = 8545,
 )

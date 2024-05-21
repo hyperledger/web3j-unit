@@ -27,7 +27,7 @@ class GethGreeterTest {
     fun greeterDeploys(
         web3j: Web3j,
         transactionManager: TransactionManager,
-        gasProvider: ContractGasProvider
+        gasProvider: ContractGasProvider,
     ) {
         Thread.sleep(10000)
         val balance =

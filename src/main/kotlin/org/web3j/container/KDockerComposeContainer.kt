@@ -20,7 +20,7 @@ import java.io.File
 open class KDockerComposeContainer(
     dockerComposePath: String,
     private val serviceName: String,
-    private val containerPort: Int
+    private val containerPort: Int,
 ) :
     DockerComposeContainer<KDockerComposeContainer>(File(dockerComposePath)), GenericService {
     override fun startService(): Web3jService {
