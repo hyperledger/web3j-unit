@@ -85,8 +85,8 @@ class GreeterTest {
      jcenter()
   }
 
-  implementation "org.web3j:core:4.11.3"
-  testCompile "org.web3j:web3j-unit:4.11.3"
+  implementation "org.web3j:core:4.12.0"
+  testCompile "org.web3j:web3j-unit:4.12.0"
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
